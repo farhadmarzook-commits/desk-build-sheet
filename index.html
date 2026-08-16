@@ -1192,6 +1192,9 @@ So the hardware below is for the analysis side: securing the accounts that reach
 
 <script>
 const SCHEMA='desk-sheet-v4';
+const SKEY=SCHEMA+'-status';  /* Buy/Maybe/Skip per card id — deliberately NOT build-keyed,
+                                 so a rebuild never costs you your choices. */
+const PREV=SCHEMA+'-prev';    /* last snapshot from a superseded build, kept recoverable */
 const content=document.getElementById('content');
 const money=n=>'$'+(n||0).toLocaleString('en-US');
 
@@ -1217,10 +1220,31 @@ function fetchStore(k){ try{ return localStorage.getItem(k); }catch(e){ return n
 function save(){
   clearTimeout(saveTimer);
   saveTimer=setTimeout(()=>{
+    saveStatuses();
     const ok=store(SCHEMA, JSON.stringify({v:2,build:BUILD,at:new Date().toISOString(),html:content.innerHTML}));
     const t=document.getElementById('savedTag');
     if(t) t.textContent = ok ? 'Saved to this browser.' : 'Edits are session-only here — use Export to keep them.';
   },400);
+}
+
+/* Statuses are stored separately from the HTML snapshot and without the build
+   hash. The snapshot is all-or-nothing and has to be arbitrated when the build
+   changes; your Buy/Maybe/Skip picks should just survive, so they do. */
+function saveStatuses(){
+  const m={};
+  content.querySelectorAll('.card[data-id]').forEach(c=>{ m[c.dataset.id]=c.dataset.status; });
+  store(SKEY, JSON.stringify(m));
+}
+function applyStatuses(){
+  const raw=fetchStore(SKEY); if(!raw) return;
+  let m; try{ m=JSON.parse(raw); }catch(e){ return; }
+  if(!m) return;
+  content.querySelectorAll('.card[data-id]').forEach(c=>{
+    const s=m[c.dataset.id];
+    if(!s||s===c.dataset.status) return;
+    c.dataset.status=s;
+    c.querySelectorAll('.seg button').forEach(b=>b.classList.toggle('on', b.dataset.s===s));
+  });
 }
 
 /* If I've published a newer version than the one you edited, don't silently
@@ -1231,10 +1255,14 @@ function restore(){
   let o; try{ o=JSON.parse(raw); }catch(e){ return; }
   if(!o||!o.html) return;
   if(o.build===BUILD){ content.innerHTML=o.html; return; }
+  /* Superseded build. Park a durable copy FIRST — save() would otherwise
+     overwrite this snapshot on the very next click, which is exactly how
+     edits used to disappear across a republish. */
+  store(PREV, raw);
   pending=o;
   const when=o.at?new Date(o.at).toLocaleDateString(undefined,{month:'short',day:'numeric'}):'earlier';
   document.getElementById('verDetail').textContent =
-    'Your edits from '+when+' are still saved. Loading the update replaces them; keeping yours hides the update until you reset.';
+    'Your Buy/Maybe/Skip picks carried over on their own. Your text, image and card edits from '+when+' did not — keep those, or load the newer published version.';
   document.getElementById('verBanner').style.display='flex';
 }
 document.getElementById('vKeep').addEventListener('click',()=>{
@@ -1358,11 +1386,12 @@ document.getElementById('btnExport').addEventListener('click',()=>{
 /* ---------- reset ---------- */
 document.getElementById('btnReset').addEventListener('click',()=>{
   if(!confirm('Discard your edits and restore the original list?'))return;
-  try{ localStorage.removeItem(SCHEMA); }catch(e){}
+  try{ localStorage.removeItem(SCHEMA); localStorage.removeItem(SKEY); localStorage.removeItem(PREV); }catch(e){}
   location.reload();
 });
 
 restore();
+applyStatuses();  /* after restore(), so picks land whether or not the snapshot applied */
 recalc();
 </script>
 </body></html>
