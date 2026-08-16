@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Ultimate Desk Setup — Build Sheet</title>
+<style>
+*{box-sizing:border-box}
+:root{--bg:#0b0b0d;--panel:#141417;--panel2:#1a1a1f;--line:#26262c;
+ --ink:#f2f2f4;--mut:#9a9aa4;--dim:#6e6e78;--acc:#7dd3a0;--warn:#f0a675;--bad:#e88a8a}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+ font:15px/1.55 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em}
+.mut{color:var(--mut);font-weight:400}
+.wrap{max-width:1420px;margin:0 auto;padding:0 26px 90px}
+a{color:inherit}
+header.hero{padding:66px 0 28px;border-bottom:1px solid var(--line)}
+.hero h1{margin:0 0 10px;font-size:40px;letter-spacing:-.025em;font-weight:650}
+.hero p{margin:0;color:var(--mut);max-width:72ch;font-size:16px}
+.bar{position:sticky;top:0;z-index:50;background:rgba(11,11,13,.9);backdrop-filter:blur(14px);
+ border-bottom:1px solid var(--line);margin:0 -26px 38px;padding:13px 26px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.filters button{background:var(--panel);border:1px solid var(--line);color:var(--mut);padding:7px 14px;
+ border-radius:999px;font:inherit;font-size:13px;cursor:pointer;transition:.15s}
+.filters button:hover{color:var(--ink);border-color:#3a3a44}
+.filters button.on{background:var(--ink);color:#0b0b0d;border-color:var(--ink);font-weight:600}
+.totals{margin-left:auto;display:flex;gap:22px;align-items:baseline;flex-wrap:wrap}
+.tot{font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:.09em}
+.tot b{display:block;font-size:22px;color:var(--ink);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.tot.a b{color:var(--acc)}
+section.phase{margin:0 0 54px}
+.phead{display:flex;gap:18px;align-items:flex-start;padding:22px 0 18px;border-bottom:1px solid var(--line);margin-bottom:24px}
+.pnum{width:38px;height:38px;flex:none;border-radius:10px;background:var(--panel);border:1px solid var(--line);
+ display:grid;place-items:center;font-weight:700;font-size:16px;color:var(--acc)}
+.phead h2{margin:0 0 4px;font-size:20px;letter-spacing:-.015em;font-weight:600}
+.phead p{margin:0;color:var(--mut);font-size:14px;max-width:76ch}
+.ptot{margin-left:auto;text-align:right;font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.09em;white-space:nowrap}
+.ptot b{display:block;font-size:19px;color:var(--ink);font-variant-numeric:tabular-nums}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:20px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;overflow:hidden;display:flex;flex-direction:column;transition:.18s}
+.card:hover{border-color:#3c3c46;transform:translateY(-2px)}
+.card[data-status="skip"]{opacity:.45}
+.card[data-status="skip"]:hover{opacity:1}
+.shot{background:#fff;height:210px;flex:0 0 210px;padding:14px;overflow:hidden;position:relative;display:block;text-decoration:none}
+.shot img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;transition:transform .25s}
+.shot:hover img{transform:scale(1.045)}
+.shot .zoom{position:absolute;right:10px;bottom:10px;background:rgba(11,11,13,.86);color:#fff;font-size:11px;
+ font-weight:600;padding:4px 9px;border-radius:999px;opacity:0;transition:.18s;pointer-events:none}
+.shot:hover .zoom{opacity:1}
+.shot .na{position:absolute;inset:0;display:grid;place-items:center;color:#9a9aa4;font-size:12px}
+.body{padding:16px 17px 17px;display:flex;flex-direction:column;gap:9px;flex:1;min-width:0}
+.body>*{overflow-wrap:anywhere}
+.topline{display:flex;justify-content:space-between;align-items:center;font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--dim)}
+.ph{color:#55555f}
+.card h3{margin:0;font-size:13px;color:var(--mut);font-weight:500}
+.pick{font-size:16px;font-weight:640;letter-spacing:-.012em;line-height:1.32;text-decoration:none;transition:.15s}
+.pick:hover{color:var(--acc)}
+.pricerow{display:flex;align-items:center;gap:10px;margin:2px 0 3px}
+.price{font-size:21px;font-weight:680;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.seg{margin-left:auto;display:inline-flex;background:var(--panel2);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{background:none;border:0;color:var(--dim);font:inherit;font-size:11.5px;padding:5px 10px;cursor:pointer;transition:.14s}
+.seg button:hover{color:var(--ink)}
+.seg button.on{background:var(--acc);color:#08120c;font-weight:640}
+.seg button[data-s="maybe"].on{background:var(--warn);color:#1a1008}
+.seg button[data-s="skip"].on{background:#3a3a44;color:var(--ink)}
+.why{margin:0;font-size:13.5px;color:#c8c8d0;line-height:1.58}
+.alts,.watch{font-size:12px;color:var(--mut);line-height:1.5;padding-top:9px;border-top:1px solid var(--line)}
+.al,.wl{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:3px}
+.watch .wl{color:var(--warn)}
+.buyat{margin-top:auto;padding-top:11px;font-size:12px;color:var(--mut);text-decoration:none;
+ display:inline-flex;align-items:center;gap:5px;transition:.15s;font-weight:560}
+.buyat:hover{color:var(--acc)}
+.buyat .arw{transition:transform .18s;display:inline-block}
+.buyat:hover .arw{transform:translateX(3px)}
+h2.sec{font-size:26px;letter-spacing:-.02em;margin:64px 0 6px;font-weight:640}
+p.sub{color:var(--mut);margin:0 0 20px;max-width:84ch}
+.tbl{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:13px;overflow:hidden;font-size:13px}
+.tbl th{background:var(--panel2);text-align:left;padding:11px 13px;font-size:10.5px;text-transform:uppercase;
+ letter-spacing:.1em;color:var(--mut);font-weight:600;border-bottom:1px solid var(--line)}
+.tbl td{padding:12px 13px;border-bottom:1px solid var(--line);vertical-align:top;color:#c8c8d0;line-height:1.5}
+.tbl tr:last-child td{border-bottom:0}
+.tbl .nm{color:var(--ink);font-weight:600}
+.tbl .ctr{text-align:center;color:var(--mut)}
+.tbl .vd{color:var(--ink)}
+.tbl tr.good .vd{color:var(--acc)}
+.tbl tr.bad .vd{color:var(--bad)}
+.tbl tr.good{background:rgba(125,211,160,.05)}
+.tbl td.warnrow{background:rgba(240,166,117,.07);box-shadow:inset 2px 0 0 var(--warn)}
+.tbl.h2h td{width:41%} .tbl.h2h td.nm{width:18%;color:var(--mut);font-weight:600;font-size:12px;
+ text-transform:uppercase;letter-spacing:.06em}
+.tbl td.win{background:rgba(125,211,160,.07);color:var(--ink);box-shadow:inset 2px 0 0 var(--acc)}
+.callout{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--acc);
+ border-radius:0 13px 13px 0;padding:20px 24px;margin:22px 0;font-size:14.5px;line-height:1.65;color:#d2d2da}
+.callout.arch{border-left-color:var(--warn);margin:0 0 26px}
+.callout b{color:var(--ink)}
+.callout h4{margin:0 0 10px;font-size:16px;color:var(--ink)}
+.mlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;margin-top:18px}
+.mitem{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px 18px}
+.mitem h4{margin:0 0 6px;font-size:14.5px;font-weight:620}
+.mitem p{margin:0 0 9px;font-size:13px;color:var(--mut);line-height:1.55}
+.mitem .fix{font-size:12px;color:var(--dim);border-top:1px solid var(--line);padding-top:9px;font-style:italic}
+.slot{display:inline-block;min-width:96px;border-bottom:1px dashed #4a4a55;margin-left:6px}
+@media(max-width:820px){.hero h1{font-size:30px} .totals{margin-left:0;width:100%}}
+footer{margin-top:70px;padding-top:26px;border-top:1px solid var(--line);color:var(--dim);font-size:12px;line-height:1.75}
+
+/* ---------- edit mode ---------- */
+.editbtns{display:flex;gap:6px}
+.editbtns button{background:var(--panel);border:1px solid var(--line);color:var(--mut);padding:7px 13px;
+ border-radius:8px;font:inherit;font-size:13px;cursor:pointer;transition:.15s}
+.editbtns button:hover{color:var(--ink);border-color:#3a3a44}
+#editToggle.on{background:var(--acc);color:#08120c;border-color:var(--acc);font-weight:650}
+.editbtns .ghost{color:var(--dim)}
+#editHelp{display:none;background:rgba(240,166,117,.09);border:1px solid rgba(240,166,117,.32);
+ border-radius:11px;padding:13px 17px;margin:0 0 26px;font-size:13px;line-height:1.6;color:#d8d8de}
+#editHelp b{color:var(--ink)}
+body.editing #editHelp{display:block}
+#savedTag{color:var(--acc);font-size:12px;margin-left:8px}
+#verBanner{display:none;align-items:center;gap:18px;flex-wrap:wrap;background:rgba(125,211,160,.08);
+ border:1px solid rgba(125,211,160,.34);border-radius:11px;padding:14px 18px;margin:0 0 26px;font-size:13.5px;line-height:1.6}
+#verBanner b{color:var(--ink)} #verDetail{color:var(--mut)}
+#verBanner .vbtns{margin-left:auto;display:flex;gap:7px}
+#verBanner button{background:var(--panel);border:1px solid var(--line);color:var(--mut);padding:7px 13px;
+ border-radius:8px;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}
+#verBanner button:hover{color:var(--ink);border-color:#3a3a44}
+#verBanner #vTake{background:var(--acc);color:#08120c;border-color:var(--acc);font-weight:650}
+.addcard{display:none;background:none;border:1.5px dashed #3a3a44;border-radius:15px;color:var(--dim);
+ font:inherit;font-size:14px;min-height:190px;cursor:pointer;transition:.15s}
+.addcard:hover{border-color:var(--acc);color:var(--acc)}
+body.editing .addcard{display:block}
+body.editing [contenteditable]{outline:1px dashed rgba(125,211,160,.4);outline-offset:3px;border-radius:3px;cursor:text}
+body.editing [contenteditable]:focus{outline:2px solid var(--acc);background:rgba(125,211,160,.07)}
+body.editing .card[data-status="skip"]{opacity:1}
+body.editing .pick,body.editing .buyat{pointer-events:none}
+body.editing .shot{pointer-events:none}
+.cardtools{display:none;position:absolute;top:9px;right:9px;gap:5px;z-index:5}
+body.editing .cardtools{display:flex}
+.cardtools button{background:rgba(11,11,13,.86);border:1px solid #3a3a44;color:#fff;font:inherit;font-size:11px;
+ padding:4px 8px;border-radius:6px;cursor:pointer;pointer-events:auto}
+.cardtools button:hover{background:var(--bad);border-color:var(--bad);color:#160808}
+.cardtools button.cfg:hover{background:var(--acc);border-color:var(--acc);color:#08120c}
+.card{position:relative}
+</style></head><body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>The Ultimate Desk Setup</h1>
+  <p><b style="color:var(--ink)">Wood and black.</b> MacBook Pro · IKEA KARLBY or SÄLJAN top · standing desk · ALEX drawers. Every link goes to the manufacturer's own store — no resellers. Every photo checked by eye, every link tested. Prices are US, mid-August 2026.</p>
+</header>
+
+<div class="bar">
+  <div class="filters">
+    <button data-f="all" class="on">All 43</button>
+    <button data-f="1">Core desk</button>
+    <button data-f="2">Wood &amp; light</button>
+    <button data-f="3">Screens</button>
+    <button data-f="4">Research</button>
+    <button data-f="5">Fabrication</button>
+  </div>
+  <div class="editbtns">
+    <button id="editToggle" title="Turn on editing">Edit</button>
+    <button id="btnExport" title="Download a copy with your edits baked in">Export</button>
+    <button id="btnReset" class="ghost" title="Discard your edits">Reset</button>
+  </div>
+  <div class="totals">
+    <div class="tot a">Committed<b id="tBuy">$0</b></div>
+    <div class="tot">+ Maybe<b id="tMaybe">$0</b></div>
+    <div class="tot">Everything<b id="tAll">$0</b></div>
+  </div>
+</div>
+<div id="editHelp">
+  <b>Edit mode is on.</b> Click any text to change it — titles, prices, notes, alternates. <b>Del</b> removes a card, <b>+ Add item</b> creates one, and the <b>⚙</b> on each image sets the photo and buy-link URLs.
+  Changes save in this browser automatically. Hit <b>Export</b> to download a copy with your edits baked in.
+  <span id="savedTag"></span>
+</div>
+
+<div id="verBanner">
+  <div><b>I've updated this list since your last edit.</b> <span id="verDetail"></span></div>
+  <div class="vbtns"><button id="vKeep">Keep my edits</button><button id="vTake">Load the update</button></div>
+</div>
+
+<div id="content" data-build="2953e63532">
+<section class="phase" data-phaseblock="1">
+  <div class="phead"><div class="pnum">1</div><div><h2>The core desk</h2><p>Chair, display, arm, dock, mat, light, desk pad. Everything you touch every day.</p></div>
+  <div class="ptot">Phase total <b data-ptot="1">$0</b></div></div>
+  
+  <div class="grid"><article class="card" data-phase="1" data-status="buy" data-price="1691" data-id="1">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://store.hermanmiller.com/office-chairs-ergonomic-chairs/embody-chair/4737.html?lang=en_US" target="_blank" rel="noopener noreferrer" title="Open Herman Miller Embody — Graphite frame, Sync Black at Herman Miller">
+    <img src="https://images.hermanmiller.group/asset/4d76a7ed-7326-42ee-8924-67dee6f3f248/W/HM_4737_100147356_graphite_graphite_black_a.png" alt="Ergonomic chair" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Herman Miller ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Seating</span><span class="ph">Phase 1</span></div>
+    <h3 data-f>Ergonomic chair</h3>
+    <a class="pick" data-f href="https://store.hermanmiller.com/office-chairs-ergonomic-chairs/embody-chair/4737.html?lang=en_US" target="_blank" rel="noopener noreferrer">Herman Miller Embody — Graphite frame, Sync Black</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$1,691</span>
+      <span class="seg">
+        <button data-s="buy"   class="on">Buy</button>
+        <button data-s="maybe" class="">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>Bought new, direct from Herman Miller. The Embody has <b>no lumbar pad at all</b> — deliberately — which is right for you since nothing hurts. Instead of pushing a lump into one spot it uses a central spine with flexible ribs plus a <b>Pixelated Support</b> matrix of hundreds of independent points on a spring layer, with <b>no foam anywhere</b>. That's what stops the hour-six compression fatigue every foam chair produces.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>Aeron in <b>Onyx Ultra Matte</b> $1,613 — the pick if you run hot or recline deeply · Mirra 2 $1,208 · LiberNovo Omni Pro $1,109 — see the head-to-head below</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>Currently 25% off ($2,255 list). <b>12-year warranty, 30-day returns</b> — but a custom colourway is final sale, so build from stock options or call first. Graphite frame + graphite base is the all-black build; the black leather-and-walnut look doesn't exist here, so the chair is the one black anchor in a wood room.</span></div>
+    <a class="buyat" href="https://store.hermanmiller.com/office-chairs-ergonomic-chairs/embody-chair/4737.html?lang=en_US" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Herman Miller</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="1" data-status="maybe" data-price="1109" data-id="36">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://libernovo.com/products/libernovo-omni-pro-dynamic-ergonomic-chair" target="_blank" rel="noopener noreferrer" title="Open LiberNovo Omni Pro — dynamic ergonomic chair at LiberNovo">
+    <img src="https://cdn.shopify.com/s/files/1/0737/2485/4510/files/OmniProchairinGraphite...png?v=1780284988" alt="Alternate chair" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">LiberNovo ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Seating</span><span class="ph">Phase 1</span></div>
+    <h3 data-f>Alternate chair</h3>
+    <a class="pick" data-f href="https://libernovo.com/products/libernovo-omni-pro-dynamic-ergonomic-chair" target="_blank" rel="noopener noreferrer">LiberNovo Omni Pro — dynamic ergonomic chair</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$1,109</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>The most interesting chair being made. An <b>8-panel articulated backrest on 16 pivot points</b>, a <b>motorised lumbar actuator</b>, and “OmniStretch” — a five-minute automated cycle that stretches your back while you sit. The Pro adds active seat ventilation. 300 lb capacity, USB-C battery lasting ~30 days.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>Full side-by-side against the Embody in the head-to-head table below</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f><b>The warranty is the catch:</b> 6 years frame but only <b>2 years electronics</b> — the battery, actuator and wiring, which are the parts most likely to fail. Herman Miller gives 12 on everything. The lumbar has <b>no vertical adjustment</b>, and reviews are split (PC Gamer 86/100, Notebookcheck 4/10 on the base model).</span></div>
+    <a class="buyat" href="https://libernovo.com/products/libernovo-omni-pro-dynamic-ergonomic-chair" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>LiberNovo</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="1" data-status="buy" data-price="1299" data-id="2">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://www.lg.com/us/monitors/lg-32u990a-s-ultrafine-monitor" target="_blank" rel="noopener noreferrer" title="Open LG UltraFine evo 32U990A — 32″ 6K, 224 PPI at LG">
+    <img src="https://media.us.lg.com/transform/ecomm-PDPGallery-1100x730/c0be470f-8d16-427d-b92a-e9524c037e73/Monitors_32U990A-S_digital-trends_gallery_01_5000x5000?io=transform:fill,width:1536" alt="Primary monitor" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">LG ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Display</span><span class="ph">Phase 1</span></div>
+    <h3 data-f>Primary monitor</h3>
+    <a class="pick" data-f href="https://www.lg.com/us/monitors/lg-32u990a-s-ultrafine-monitor" target="_blank" rel="noopener noreferrer">LG UltraFine evo 32U990A — 32″ 6K, 224 PPI</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$1,299</span>
+      <span class="seg">
+        <button data-s="buy"   class="on">Buy</button>
+        <button data-s="maybe" class="">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>The best 32″ display you can buy, and it isn't ASUS. <b>224 PPI</b> — higher than Apple's 218 Retina standard — on an LG Nano IPS Black panel. PCWorld measured <b>ΔE 0.73 average</b>, the best factory colour accuracy in this class, with 100% Adobe RGB. The <b>only 6K display with Thunderbolt 5</b>, a real KVM, and downstream daisy-chaining.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>Apple Studio Display XDR 27″ $2,899 VESA — better HDR and 120Hz, and FDA-cleared DICOM presets · Kuycon G32P $1,699 — same panel in black aluminium, no KVM, 12-month warranty</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f><b>It is silver, not black</b> — “Nano IPS Black” names the panel tech, not the chassis. In a wood-and-black room silver actually reads better than it would in an all-black one; it echoes the MacBook. Also: no Ethernet, and brightness needs LG's own app.</span></div>
+    <a class="buyat" href="https://www.lg.com/us/monitors/lg-32u990a-s-ultrafine-monitor" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>LG</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="1" data-status="buy" data-price="130" data-id="3">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://grovemade.com/product/monitor-arm/" target="_blank" rel="noopener noreferrer" title="Open Grovemade Monitor Arm — matte black at Grovemade">
+    <img src="https://grovemade.imgix.net/https%3A%2F%2Fgrovemade.com%2Fshop-static%2Fshop%2Fvariant%2Fgrovemade-monitor-arm-galA-C2.jpg%3F_v%3D1715374508.5150435?auto=format&ixlib=python-1.1.2&w=1500&s=57b7c2c2fdaf7092462fe7150e7e2d33" alt="Monitor arm" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Grovemade ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Display</span><span class="ph">Phase 1</span></div>
+    <h3 data-f>Monitor arm</h3>
+    <a class="pick" data-f href="https://grovemade.com/product/monitor-arm/" target="_blank" rel="noopener noreferrer">Grovemade Monitor Arm — matte black</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$130</span>
+      <span class="seg">
+        <button data-s="buy"   class="on">Buy</button>
+        <button data-s="maybe" class="">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>Swapped to this now that I know your desk. It's made by a wood-desk company to sit on a wood desk, it's the cheapest of the serious options, and its <b>0.4″–3.2″ clamp is the widest on the market</b> — your KARLBY is 1.5″, so it fits with room to spare. Aluminium and steel, matte black powder coat, built-in cord management, 17″–35″ monitors at 6.6–24.2 lb. The LG is 13.2 lb, dead centre.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>Ergotron LX Pro $199 — 4–22 lb, also fine; <b>Polished Aluminium</b> is the interesting choice against walnut, since black-on-wood can go flat · Humanscale M2 Pro $314</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f><b>Two things about your specific desk.</b> KARLBY and SÄLJAN are <b>particleboard with a 1/8″ veneer</b>, not solid wood — use the arm's backing plate so a 13 lb cantilever doesn't dent the top. And Ergotron's own guide says a C-clamp needs <b>1.2″ of clearance behind the desk edge</b>, so if the desk is flush to a wall you'll need to pull it forward or clamp from the side.</span></div>
+    <a class="buyat" href="https://grovemade.com/product/monitor-arm/" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Grovemade</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="1" data-status="buy" data-price="500" data-id="4">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://us.caldigit.com/products/ts5-plus" target="_blank" rel="noopener noreferrer" title="Open CalDigit TS5 Plus — Space Black at CalDigit">
+    <img src="https://us.caldigit.com/cdn/shop/files/TS5Plus-01.jpg?v=1742876314" alt="Thunderbolt dock" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">CalDigit ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Connectivity</span><span class="ph">Phase 1</span></div>
+    <h3 data-f>Thunderbolt dock</h3>
+    <a class="pick" data-f href="https://us.caldigit.com/products/ts5-plus" target="_blank" rel="noopener noreferrer">CalDigit TS5 Plus — Space Black</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$500</span>
+      <span class="seg">
+        <button data-s="buy"   class="on">Buy</button>
+        <button data-s="maybe" class="">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>Your “USB, SD card, etc.” answer. Space Black, UHS-II SD + microSD at 312 MB/s, <b>10 Gigabit Ethernet</b>, 140W to the Mac, 330W supply, 20 ports. Still necessary with either display — the LG has no Ethernet, the Apple has no Ethernet, USB-A or SD.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>Sonnet Echo 21 $500 — adds a user-installable 8TB M.2 slot · OWC Thunderbolt 5 Dock $320</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>Requires macOS 15+. Frequently out of stock.</span></div>
+    <a class="buyat" href="https://us.caldigit.com/products/ts5-plus" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>CalDigit</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="1" data-status="buy" data-price="240" data-id="37">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://grovemade.com/product/matte-studio-pad/" target="_blank" rel="noopener noreferrer" title="Open Grovemade Matte Studio Pad — Black at Grovemade">
+    <img src="https://grovemade.imgix.net/https%3A%2F%2Fgrovemade.com%2Fshop-static%2Fshop%2Fvariant%2Fgrovemade-studio-pad-matte-black-medium-galA-A1.jpg%3F_v%3D1745024143.8168075?auto=format&ixlib=python-1.1.2&w=1000&s=fbef8891172690a99aafd0419854c4d4" alt="Desk pad" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Grovemade ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Desk gear</span><span class="ph">Phase 1</span></div>
+    <h3 data-f>Desk pad</h3>
+    <a class="pick" data-f href="https://grovemade.com/product/matte-studio-pad/" target="_blank" rel="noopener noreferrer">Grovemade Matte Studio Pad — Black</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$240</span>
+      <span class="seg">
+        <button data-s="buy"   class="on">Buy</button>
+        <button data-s="maybe" class="">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>Your link, and it's the single most on-brief object on this list. Brushed <b>aluminium chassis</b>, matte natural linoleum surface, full cork backing — and the integrated tray is <b>American black walnut</b>. It is literally the wood-and-black product. On a walnut KARLBY it reads tonal; on oak or SÄLJAN it gives you a deliberate two-tone instead of a near-miss.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f><b>Wool Felt Studio Pad in Blackened Walnut $280</b> — the Sumi version, arguably even more on-brief · Oakywood Felt &amp; Cork Desk Mat from $87 — the value pick, and felt reads warmer against wood than black rubber</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>One size only: <b>38″ × 14.125″</b>. Ships in <b>4–6 weeks</b>. Take Black, not Navy — the Navy ships with a maple tray, and maple will fight a walnut desk.</span></div>
+    <a class="buyat" href="https://grovemade.com/product/matte-studio-pad/" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Grovemade</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="1" data-status="buy" data-price="119" data-id="5">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://ergodriven.com/products/topo" target="_blank" rel="noopener noreferrer" title="Open Topo by Ergodriven — Obsidian Black at Ergodriven">
+    <img src="https://ergodriven.com/cdn/shop/files/buy_3_Get_1_Free_-4.jpg" alt="Anti-fatigue mat" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Ergodriven ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Ergonomics</span><span class="ph">Phase 1</span></div>
+    <h3 data-f>Anti-fatigue mat</h3>
+    <a class="pick" data-f href="https://ergodriven.com/products/topo" target="_blank" rel="noopener noreferrer">Topo by Ergodriven — Obsidian Black</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$119</span>
+      <span class="seg">
+        <button data-s="buy"   class="on">Buy</button>
+        <button data-s="maybe" class="">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>The highest value-per-dollar item here. Standing still on a hard floor is worse for you than sitting; the Topo's calculated terrain induces constant subconscious postural shifts.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>Imprint CumulusPRO · Topo Mini for under 5&#39;4″</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>Original is for 5&#39;5″ and up. 16-year warranty, 90-day returns.</span></div>
+    <a class="buyat" href="https://ergodriven.com/products/topo" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Ergodriven</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="1" data-status="buy" data-price="199" data-id="6">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://www.benq.com/en-us/lighting/monitor-light/screenbar-halo-2.html" target="_blank" rel="noopener noreferrer" title="Open BenQ ScreenBar Halo 2 at BenQ">
+    <img src="https://static.bhphoto.com/images/images500x500/benq_9h_w4pwt_wc1_screenbar_halo_2_dark_1751469535_1902869.jpg" alt="Monitor light bar" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">BenQ ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Lighting</span><span class="ph">Phase 1</span></div>
+    <h3 data-f>Monitor light bar</h3>
+    <a class="pick" data-f href="https://www.benq.com/en-us/lighting/monitor-light/screenbar-halo-2.html" target="_blank" rel="noopener noreferrer">BenQ ScreenBar Halo 2</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$199</span>
+      <span class="seg">
+        <button data-s="buy"   class="on">Buy</button>
+        <button data-s="maybe" class="">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>Task light and bias light in one. Over 1000 lux on the desk with zero light on the screen, and Rf&gt;96 full-spectrum, which matters when you read all day. Both reels you sent had a light bar sitting on the monitor — this is the good version of that.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>BenQ ScreenBar Pro ~$139 — same task output, no rear bias light</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>Dark grey, not wood — but it sits on the monitor so it reads as part of the screen rather than part of the desk.</span></div>
+    <a class="buyat" href="https://www.benq.com/en-us/lighting/monitor-light/screenbar-halo-2.html" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>BenQ</span> <span class="arw">→</span></a>
+  </div>
+</article><button class="addcard" data-addto="1">+ Add item</button></div></section><section class="phase" data-phaseblock="2">
+  <div class="phead"><div class="pnum">2</div><div><h2>Wood, light and the room</h2><p>The layer that makes it look like the reels — warm wall wash, a floating shelf, wood on the desk surface, and something green.</p></div>
+  <div class="ptot">Phase total <b data-ptot="2">$0</b></div></div>
+  
+  <div class="grid"><article class="card" data-phase="2" data-status="buy" data-price="230" data-id="38">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://www.philips-hue.com/en-us/p/hue-white-and-color-ambiance-hue-play-wall-washer/046677590161" target="_blank" rel="noopener noreferrer" title="Open Philips Hue Play Wall Washer — Black at Philips Hue">
+    <img src="https://www.assets.signify.com/is/image/Signify/046677590161-929003837901-Hue-Play-wall-washer-black-NAM-RTP" alt="Behind-monitor wall wash" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Philips Hue ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Lighting</span><span class="ph">Phase 2</span></div>
+    <h3 data-f>Behind-monitor wall wash</h3>
+    <a class="pick" data-f href="https://www.philips-hue.com/en-us/p/hue-white-and-color-ambiance-hue-play-wall-washer/046677590161" target="_blank" rel="noopener noreferrer">Philips Hue Play Wall Washer — Black</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$230</span>
+      <span class="seg">
+        <button data-s="buy"   class="on">Buy</button>
+        <button data-s="maybe" class="">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f><b>This is the single thing that makes those reels look the way they do.</b> Both setups you sent wash the wall behind the monitor with warm light — it's what turns a desk into a room. Purpose-built for exactly that: 1,035 lm, matte black aluminium, and it goes down to <b>2000K</b>, which is proper candlelight-warm rather than the blue-white most strips default to. Native <b>Apple Home and Matter</b>.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>Hue Play Light Bar 2-pack $190 — smaller, clips behind the monitor · <b>Waveform DynaWhite dim-to-warm strip $275</b> — not smart, but 95 CRI and it warms from 2700K to 2000K <i>as you dim it</i>, like a real filament bulb</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>Bridge recommended for full features. Note the Hue Play Gradient strip for PC is currently listed as no longer available, and Philips has teased a “Play Gradient Strip Light Pro” — worth a few weeks' wait if you want the gradient version.</span></div>
+    <a class="buyat" href="https://www.philips-hue.com/en-us/p/hue-white-and-color-ambiance-hue-play-wall-washer/046677590161" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Philips Hue</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="2" data-status="maybe" data-price="274" data-id="39">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://oakywood.shop/products/floating-shelf" target="_blank" rel="noopener noreferrer" title="Open Oakywood Floating Shelf — walnut or black-stained oak at Oakywood">
+    <img src="https://cdn.shopify.com/s/files/1/2447/0423/files/floatingshelf-oak-szare-01.webp?v=1762440083" alt="Floating wall shelf" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Oakywood ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Storage</span><span class="ph">Phase 2</span></div>
+    <h3 data-f>Floating wall shelf</h3>
+    <a class="pick" data-f href="https://oakywood.shop/products/floating-shelf" target="_blank" rel="noopener noreferrer">Oakywood Floating Shelf — walnut or black-stained oak</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$274</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>The shelf-above-the-desk look from the third reel. Solid <b>American walnut, oak, light oak, or black-stained oak</b> — that last one is the wood-and-black answer in a single object. 1.7″ thick, hidden metal bracket, 33 lb capacity, and a 3D configurator for custom sizes.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f><b>Shelfology Aksel LED $339–445</b> — walnut or white oak with the <b>LED routed into the shelf body</b> during construction, dimmable 2700K; the proper integrated-lighting answer · J Thomas Home battery-lit walnut $177 if you can't run wiring</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>Wall anchors are <b>not</b> included — pick them for your wall type, and hit studs. Made in Poland: 3–4 weeks production plus shipping. No integrated light, so pair it with the UNDERCAB below.</span></div>
+    <a class="buyat" href="https://oakywood.shop/products/floating-shelf" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Oakywood</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="2" data-status="maybe" data-price="105" data-id="40">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://store.waveformlighting.com/products/ultra-high-95-cri-led-under-cabinet-light-strip" target="_blank" rel="noopener noreferrer" title="Open Waveform UNDERCAB 95 CRI — 4 × 12″ at Waveform Lighting">
+    <img src="https://store.waveformlighting.com/cdn/shop/products/under-cabinet.jpg?v=1551132216" alt="Under-shelf lighting" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Waveform Lighting ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Lighting</span><span class="ph">Phase 2</span></div>
+    <h3 data-f>Under-shelf lighting</h3>
+    <a class="pick" data-f href="https://store.waveformlighting.com/products/ultra-high-95-cri-led-under-cabinet-light-strip" target="_blank" rel="noopener noreferrer">Waveform UNDERCAB 95 CRI — 4 × 12″</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$105</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>The warm glow under the shelves in those videos. <b>CRI &gt;95, R9 &gt;80, 3000K</b>, 500 lm per module, daisy-chains up to four, and the power supply and switch are in the box. This is the honest version of the magnetic bar lights the first reel recommended.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>Hue Play Light Bar if you want it dimmable and app-controlled · the 20″ version is $175</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f><b>Not dimmable</b> — on/off only, which is the one real drawback. Also: I looked hard, and <b>no rechargeable magnetic bar light publishes a CRI figure</b>, which almost always means 70–80. Fine for a closet, wrong for a desk you read at.</span></div>
+    <a class="buyat" href="https://store.waveformlighting.com/products/ultra-high-95-cri-led-under-cabinet-light-strip" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Waveform Lighting</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="2" data-status="maybe" data-price="150" data-id="41">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://grovemade.com/product/wood-display-rail/" target="_blank" rel="noopener noreferrer" title="Open Grovemade Display Rail — Walnut at Grovemade">
+    <img src="https://grovemade.imgix.net/https%3A%2F%2Fgrovemade.com%2Fshop-static%2Fshop%2Fvariant%2Fgrovemade-walnut-display-rail-galA-D1_9tDZ1Nd.jpg%3F_v%3D1686875084.7122073?auto=format&ixlib=python-1.1.2&w=1500&s=a4d450c54ff4382b5f7f1596653ddf76" alt="Wood ledge" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Grovemade ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Desk gear</span><span class="ph">Phase 2</span></div>
+    <h3 data-f>Wood ledge</h3>
+    <a class="pick" data-f href="https://grovemade.com/product/wood-display-rail/" target="_blank" rel="noopener noreferrer">Grovemade Display Rail — Walnut</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$150</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>A low walnut rail along the back edge that holds cards, notes and your phone. Since you're on a monitor arm, this replaces the desk-shelf idea at half the cost and a fraction of the visual bulk — you get the wood mass without a riser you don't need.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>Blackened walnut version $180 · Grovemade Desk Shelf $220–500 or <b>Oakywood Desk Shelf $131 in oak veneer with black legs</b> if you decide you want a real shelf tier</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>With an arm holding the monitor, a desk shelf has no structural job left — it's purely a staging tier. At $329 for solid walnut that's an expensive shelf; the rail is the smarter buy.</span></div>
+    <a class="buyat" href="https://grovemade.com/product/wood-display-rail/" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Grovemade</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="2" data-status="maybe" data-price="180" data-id="10">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://oakywood.shop/collections/oakyblocks" target="_blank" rel="noopener noreferrer" title="Open Oakywood OakyBlocks — mixed oak / walnut / black at Oakywood">
+    <img src="https://oakywood.shop/cdn/shop/files/new-menu-item-trays_1.jpg?v=1761149589&width=768" alt="Desk organizer" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Oakywood ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Desk gear</span><span class="ph">Phase 2</span></div>
+    <h3 data-f>Desk organizer</h3>
+    <a class="pick" data-f href="https://oakywood.shop/collections/oakyblocks" target="_blank" rel="noopener noreferrer">Oakywood OakyBlocks — mixed oak / walnut / black</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$180</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>Modular trays in <b>oak, walnut or black — and you can mix them in the same grid</b>, which is exactly the wood-and-black brief. Pen tray, large tray, small tray, sticky-note tray, catchall, from $43 each.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>Grovemade Desk Tray $140–240 and Walnut Pen Cup $80 — better finish, higher price</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f><b>Ugmonk Gather is gone.</b> I'd recommended it earlier; as of August 2026 their Gather collection page returns “No products found” and the old product URLs 404. Ugmonk is now almost entirely the Analog paper system. Don't plan around it.</span></div>
+    <a class="buyat" href="https://oakywood.shop/collections/oakyblocks" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Oakywood</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="2" data-status="maybe" data-price="2625" data-id="14">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://flos.com/en/us/captain-flint/M-captain-flint.html" target="_blank" rel="noopener noreferrer" title="Open Flos Captain Flint — Anthracite / Black Marble at Flos">
+    <img src="https://flos.com/dw/image/v2/BFXX_PRD/on/demandware.static/-/Sites-FLOS-master/default/dwb9163ac4/images/packshot/DECORATIVE/DECORATIVE_FLOOR_CAPTAIN-FLINT/F1530030/Flos-Pim-Image-Luminaire-Floor-Captain_Flint-Anthracite-Black_Marble.jpg" alt="Room lighting" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Flos ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Lighting</span><span class="ph">Phase 2</span></div>
+    <h3 data-f>Room lighting</h3>
+    <a class="pick" data-f href="https://flos.com/en/us/captain-flint/M-captain-flint.html" target="_blank" rel="noopener noreferrer">Flos Captain Flint — Anthracite / Black Marble</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$2,625</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>Michael Anastassiades. 60.5″ tall, anthracite stem on a <b>black Nero Marquina marble</b> base, conical head that pivots to aim. Stand it behind the desk and it washes the wall — the design-object version of what the wall washer does functionally.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f><b>Hue Signe Gradient Floor Lamp in OAK $400</b> — the on-brief smart alternative: oak base, 2000–6500K, Apple Home, no bridge needed · Dyson Solarcycle Morph $850 — CRI≥90, &lt;1% flicker, the best actual <i>light</i> here · Lumio Lito Classic $250 — real FSC walnut, folds like a book</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>No smart control, no colour-temperature adjustment. You're buying an object. If you want the wood-and-black room to have one expensive beautiful thing in it, this is a good candidate — but the Hue Signe in oak does the same job for $400 and talks to Apple Home.</span></div>
+    <a class="buyat" href="https://flos.com/en/us/captain-flint/M-captain-flint.html" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Flos</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="2" data-status="maybe" data-price="140" data-id="17">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://cowaymega.com/products/mighty-ap-1512hh" target="_blank" rel="noopener noreferrer" title="Open Coway Airmega AP-1512HH “Mighty” — black at Coway">
+    <img src="https://cowaymega.com/cdn/shop/files/Mighty_black_wirecutter_25968055-327d-4c15-adb8-e07b847aed8c.png?v=1784673431" alt="Air purifier" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Coway ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Air</span><span class="ph">Phase 2</span></div>
+    <h3 data-f>Air purifier</h3>
+    <a class="pick" data-f href="https://cowaymega.com/products/mighty-ap-1512hh" target="_blank" rel="noopener noreferrer">Coway Airmega AP-1512HH “Mighty” — black</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$140</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>Long-running Wirecutter top pick, black, 361 sq ft, True HEPA plus carbon with auto mode.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>Coway Airmega 400S ~$364 for a whole room</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>Your oil diffuser works <b>against</b> this, and it is <b>not</b> sufficient for 3D printer emissions.</span></div>
+    <a class="buyat" href="https://cowaymega.com/products/mighty-ap-1512hh" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Coway</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="2" data-status="maybe" data-price="60" data-id="18">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://www.thesill.com/products/zz-plant" target="_blank" rel="noopener noreferrer" title="Open ZZ plant in a walnut or matte black planter at The Sill">
+    <img src="https://cdn.shopify.com/s/files/1/0150/6262/files/the-sill_Large-ZZ_Large-Agnes-Black_Variant.jpg?v=1766861236" alt="Plant" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">The Sill ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Decor</span><span class="ph">Phase 2</span></div>
+    <h3 data-f>Plant</h3>
+    <a class="pick" data-f href="https://www.thesill.com/products/zz-plant" target="_blank" rel="noopener noreferrer">ZZ plant in a walnut or matte black planter</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$60</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>Every single one of the three reels you sent has plants in it — that's not a coincidence, it's the ingredient that stops a hard-surfaces desk reading cold. Near-unkillable in low light.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f><b>Grovemade Walnut Planter $70 small / $120 large</b> — one plant in a walnut pot does more for a wood-and-black desk than any accessory here · Oakywood Cubic Pot from $43 · trailing pothos on the floating shelf for the vine look from the third reel</span></div>
+    
+    <a class="buyat" href="https://www.thesill.com/products/zz-plant" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>The Sill</span> <span class="arw">→</span></a>
+  </div>
+</article><button class="addcard" data-addto="2">+ Add item</button></div></section><section class="phase" data-phaseblock="3">
+  <div class="phead"><div class="pnum">3</div><div><h2>Screens, workflow and power</h2><p>The extra screens you liked, the control surface, and the charging and storage that sit on top of the desk.</p></div>
+  <div class="ptot">Phase total <b data-ptot="3">$0</b></div></div>
+  <div class="callout arch"><h4>Before you buy any of this — the architecture that keeps you out of trouble</h4>
+<b>Patient data does not go on your own hardware.</b> That isn't caution, it's what institutional policy says in writing at essentially every US academic medical centre — personal machines and personal drives are not approved systems of record for PHI, no matter how well encrypted. Encryption is a control; approval is a policy determination, and you can't self-certify it.<br><br>
+The standard pattern, and the one to build: <b>identifiers live in your institution's REDCap</b> — free to you through your CTSA or research informatics office, running on servers already approved for ePHI, with an audit trail, MFA and role-based access. You tag the identifier fields, and REDCap strips them automatically on export. <b>The de-identified export is what comes to this desk</b>, where R, your figures and your manuscript live. The linkage key never leaves REDCap.<br><br>
+Two things that catch trainees specifically: <b>IRB approval has to come first</b> — a chart review can only be determined exempt <i>by the IRB</i>, and retroactive approval doesn't exist, so data collected before approval generally can't be published. And <b>don't build it in Excel</b> — no audit trail, no validation, silent date coercion, no defensible provenance. REDCap in, R out.<br><br>
+So the hardware below is for the analysis side: securing the accounts that reach the real data, moving de-identified datasets safely, and keeping what's on your screen off other people's retinas.</div>
+  <div class="grid"><article class="card" data-phase="3" data-status="buy" data-price="499" data-id="42">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://us.espres.so/products/espresso-touch" target="_blank" rel="noopener noreferrer" title="Open espresso Touch 15 — 15″ touchscreen at espresso">
+    <img src="https://cdn.shopify.com/s/files/1/0605/0988/0460/files/image-pdp-touch15-standplus-plus-quarter-productphoto-transfer_1.webp?v=1764719356" alt="The extra screen" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">espresso ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Display</span><span class="ph">Phase 3</span></div>
+    <h3 data-f>The extra screen</h3>
+    <a class="pick" data-f href="https://us.espres.so/products/espresso-touch" target="_blank" rel="noopener noreferrer">espresso Touch 15 — 15″ touchscreen</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$499</span>
+      <span class="seg">
+        <button data-s="buy"   class="on">Buy</button>
+        <button data-s="maybe" class="">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>This is the thing you liked from the third reel, but done in a way that actually works on your Mac. 15″, 1920×1080, <b>0.2″ thick</b>, 1.8 lb, anodised aluminium and glass, bus-powered over a single USB-C, magnetic stand included. Critically it has <b>official multi-touch support on macOS</b> through espresso's free Flow app — auto-rotate, snap and glide gestures. Mac-first Australian company.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f><b>espresso Pro 15 $699 / Pro 17 $799</b> — 4K, 550 nits, 100% Adobe RGB, if the side screen should also be colour-accurate · espresso Display 15 $299 — same panel but <b>no touch at all</b>, touch was stripped to hit the price · iPad + Sidecar is free if you already own one</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>The stand raises it 5.7–9.6″ off the desk, so it sits beside or under the main display like the Edge does in that video.</span></div>
+    <a class="buyat" href="https://us.espres.so/products/espresso-touch" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>espresso</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="3" data-status="skip" data-price="250" data-id="43">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://www.corsair.com/us/en/p/monitors/cc-9011306-ww/xeneon-edge-14-5-lcd-touchscreen-cc-9011306-ww" target="_blank" rel="noopener noreferrer" title="Open Corsair Xeneon Edge — 14.5″ touchscreen at Corsair">
+    <img src="https://cdn.shopify.com/s/files/1/0605/0988/0460/files/image-pdp-touch15-standplus-plus-quarter-productphoto-transfer_1.webp?v=1764719356" alt="The one from the reel" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Corsair ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Display</span><span class="ph">Phase 3</span></div>
+    <h3 data-f>The one from the reel</h3>
+    <a class="pick" data-f href="https://www.corsair.com/us/en/p/monitors/cc-9011306-ww/xeneon-edge-14-5-lcd-touchscreen-cc-9011306-ww" target="_blank" rel="noopener noreferrer">Corsair Xeneon Edge — 14.5″ touchscreen</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$250</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="">Maybe</button>
+        <button data-s="skip"  class="on">Skip</button>
+      </span></div>
+    <p class="why" data-f>The exact screen from the cozy.moji reel: 14.5″, 2560×720 ultrawide, <b>14 internal magnets</b> so it sticks to any ferrous surface, plus a magnetic stand and two ¼″-20 threads. $249.99, and it looks fantastic in that video.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>espresso Touch 15 above — costs more but works properly on a Mac</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f><b>Marked skip because you're Mac-only, and Corsair says it themselves:</b> “the XENEON EDGE is <b>not</b> compatible with the MacOS version of iCUE.” It lights up as a plain display over USB-C — but <b>touch does not work</b>, and every widget, dashboard and system-monitor panel you saw in that reel lives inside iCUE, which doesn't support this device on Mac. Two separate people have written unofficial macOS touch drivers from scratch, both single-touch only, both unsigned hobby projects you compile yourself. On your Mac this is a $250 dumb second monitor.</span></div>
+    <a class="buyat" href="https://www.corsair.com/us/en/p/monitors/cc-9011306-ww/xeneon-edge-14-5-lcd-touchscreen-cc-9011306-ww" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Corsair</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="3" data-status="maybe" data-price="199" data-id="44">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://tidbyt.com/collections/tidbyt-smart-displays" target="_blank" rel="noopener noreferrer" title="Open Tidbyt Gen 1 — Walnut at Tidbyt">
+    <img src="https://cdn.shopify.com/s/files/1/0426/4768/3235/files/t2gen2-pdp.jpg?v=1702290539" alt="Ambient screen" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Tidbyt ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Display</span><span class="ph">Phase 3</span></div>
+    <h3 data-f>Ambient screen</h3>
+    <a class="pick" data-f href="https://tidbyt.com/collections/tidbyt-smart-displays" target="_blank" rel="noopener noreferrer">Tidbyt Gen 1 — Walnut</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$199</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>The third screen texture, and <b>the only auxiliary display on the market with a real wood face.</b> Retro low-res LED matrix behind a diffuser showing weather, transit, sports, now-playing, stocks. Half useful, half charm — and that's fine, it's the charm object.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f><b>TRMNL $139</b> — 7.5″ e-ink dashboard, 1,000+ plugins, ~3 months per charge, no subscription. Matte e-ink sits on wood without glowing, and it's the more <i>useful</i> of the two · Vestaboard Note $999 — beautiful, audible, and mostly decorative</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f><b>Buy Gen 1, not Gen 2</b> — Gen 2 is better hardware but Tidbyt dropped the wood option, so it only comes in black or white. Gen 1 in walnut is the one that fits the brief.</span></div>
+    <a class="buyat" href="https://tidbyt.com/collections/tidbyt-smart-displays" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Tidbyt</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="3" data-status="buy" data-price="180" data-id="7">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://www.elgato.com/us/en/p/stream-deck-plus-black" target="_blank" rel="noopener noreferrer" title="Open Elgato Stream Deck + at Elgato">
+    <img src="https://elgato-assets.imgix.net/image/upload/f_auto/q_auto/v1770644871/Products/10GBD9901/above-the-fold/2026/Stream_Deck_ATF_01.jpg" alt="Control surface" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Elgato ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Workflow</span><span class="ph">Phase 3</span></div>
+    <h3 data-f>Control surface</h3>
+    <a class="pick" data-f href="https://www.elgato.com/us/en/p/stream-deck-plus-black" target="_blank" rel="noopener noreferrer">Elgato Stream Deck +</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$180</span>
+      <span class="seg">
+        <button data-s="buy"   class="on">Buy</button>
+        <button data-s="maybe" class="">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>Eight LCD keys plus four push-encoder dials and an LCD touch strip. If what you actually liked about the Xeneon Edge was <b>the widgets and controls rather than the screen itself</b>, this is the Mac-native way to get it — the keys and dials do real work on macOS, where iCUE's widgets don't exist.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>Stream Deck MK.2 $150 — keys only · Logitech MX Creative Console $160–200, matches your MX Master 4</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>Requires macOS 13+. Try the <b>free</b> Virtual Stream Deck first — a week tells you whether the workflow fits.</span></div>
+    <a class="buyat" href="https://www.elgato.com/us/en/p/stream-deck-plus-black" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Elgato</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="3" data-status="buy" data-price="100" data-id="45">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://satechi.com/products/chargeview-140w-desktop-charger" target="_blank" rel="noopener noreferrer" title="Open Satechi ChargeView 140W at Satechi">
+    <img src="https://cdn.shopify.com/s/files/1/1520/4366/files/Chargeview140WCharger.webp?v=1776755715" alt="Desktop charger" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Satechi ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Charging</span><span class="ph">Phase 3</span></div>
+    <h3 data-f>Desktop charger</h3>
+    <a class="pick" data-f href="https://satechi.com/products/chargeview-140w-desktop-charger" target="_blank" rel="noopener noreferrer">Satechi ChargeView 140W</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$100</span>
+      <span class="seg">
+        <button data-s="buy"   class="on">Buy</button>
+        <button data-s="maybe" class="">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>Your link, and it replaces the Gitryin I had here — this is strictly the better product. <b>140W GaN across four USB-C ports</b> with a built-in LCD showing <b>real-time draw per port in watts</b>. That display is genuinely useful rather than decorative: with 140W shared four ways you want to see whether the MacBook is actually getting 65W or 96W. Ships with a modular stand for vertical or horizontal.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>Gitryin 12-in-1 $123 — retractable cables and AC outlets, but only 40W total, which won't meaningfully charge a MacBook Pro</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>Space Black only. No USB-A at all. Has hit <b>$80 on promo</b> — worth waiting for a sale. Four ports at once splits to 65+40+20+15W.</span></div>
+    <a class="buyat" href="https://satechi.com/products/chargeview-140w-desktop-charger" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Satechi</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="3" data-status="maybe" data-price="200" data-id="46">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://satechi.com/products/dotdisk-80gbps-ssd-enclosure" target="_blank" rel="noopener noreferrer" title="Open Satechi DotDisk 80Gbps — Space Black at Satechi">
+    <img src="https://cdn.shopify.com/s/files/1/1520/4366/files/DotDisk_80GbpsSSDEnclosurespaceblacklifestyle.webp?v=1777963151" alt="SSD enclosure" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Satechi ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Storage</span><span class="ph">Phase 3</span></div>
+    <h3 data-f>SSD enclosure</h3>
+    <a class="pick" data-f href="https://satechi.com/products/dotdisk-80gbps-ssd-enclosure" target="_blank" rel="noopener noreferrer">Satechi DotDisk 80Gbps — Space Black</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$200</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>Your link. Thunderbolt 5 / USB4 v2 at 80 Gbps, and Satechi's own testing on an M4 MacBook Pro measured <b>5,938 MB/s read and 6,416 MB/s write</b>. Takes an M.2 2280 NVMe up to 8TB, so you buy the drive separately and pick your own capacity — better $/TB than any prebuilt.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>LaCie Rugged SSD Pro5 $329 prebuilt if you'd rather not assemble · OWC Envoy Ultra $400</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f><b>Drive not included.</b> Take Space Black, not Silver. It has a <b>built-in micro fan</b> — active cooling, so it isn't silent.</span></div>
+    <a class="buyat" href="https://satechi.com/products/dotdisk-80gbps-ssd-enclosure" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Satechi</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="3" data-status="maybe" data-price="350" data-id="8">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://kantoaudio.com/powered-speakers/ora/" target="_blank" rel="noopener noreferrer" title="Open Kanto ORA — matte black at Kanto Audio">
+    <img src="https://kantoaudio.com/wp-content/uploads/oramb_main.png" alt="Desktop speakers" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Kanto Audio ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Audio</span><span class="ph">Phase 3</span></div>
+    <h3 data-f>Desktop speakers</h3>
+    <a class="pick" data-f href="https://kantoaudio.com/powered-speakers/ora/" target="_blank" rel="noopener noreferrer">Kanto ORA — matte black</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$350</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>USB-C straight off the Mac at 24-bit/96 kHz, 50W RMS bi-amped, genuine flat matte black. Better bass extension and imaging than the Audioengine for $50 more.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>Audioengine A2+ Wireless $279–299 · Kanto REN $700 adds HDMI ARC but stands 10.9″ tall</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>Studio monitors are the wrong tool for a study desk — no volume knob, need an interface, and flat tuning is fatiguing casually.</span></div>
+    <a class="buyat" href="https://kantoaudio.com/powered-speakers/ora/" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Kanto Audio</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="3" data-status="maybe" data-price="136" data-id="9">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://isoacoustics.com/product/iso-130/" target="_blank" rel="noopener noreferrer" title="Open IsoAcoustics ISO-130 at IsoAcoustics">
+    <img src="https://isoacoustics.com/wp-content/uploads/2021/04/mainphoto-iso130-1.jpg" alt="Speaker isolation stands" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">IsoAcoustics ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Audio</span><span class="ph">Phase 3</span></div>
+    <h3 data-f>Speaker isolation stands</h3>
+    <a class="pick" data-f href="https://isoacoustics.com/product/iso-130/" target="_blank" rel="noopener noreferrer">IsoAcoustics ISO-130</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$136</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>Do this <b>before</b> spending more on speakers. Desk coupling is the number one cause of boomy desktop bass, and these lift the tweeter to ear height.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>ISO-155 for larger speakers · Kanto S2</span></div>
+    
+    <a class="buyat" href="https://isoacoustics.com/product/iso-130/" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>IsoAcoustics</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="3" data-status="maybe" data-price="159" data-id="11">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://nomadgoods.com/products/stand-one-max-4th-gen-carbide" target="_blank" rel="noopener noreferrer" title="Open Nomad Stand One Max (4th Gen) — Carbide at Nomad">
+    <img src="https://cdn.shopify.com/s/files/1/0384/6721/files/856504015701_A_50258ba4-be39-4c61-9d79-5fc25e69a637.jpg?v=1762973200" alt="MagSafe 3-in-1" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Nomad ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Charging</span><span class="ph">Phase 3</span></div>
+    <h3 data-f>MagSafe 3-in-1</h3>
+    <a class="pick" data-f href="https://nomadgoods.com/products/stand-one-max-4th-gen-carbide" target="_blank" rel="noopener noreferrer">Nomad Stand One Max (4th Gen) — Carbide</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$159</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>Qi2.2 at 25W, metal chassis and glass base. Consolidates iPhone + Watch + AirPods into one solid object.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f><b>Oakywood MagSafe iPhone Stand from $208</b> or their <b>Desk Shelf Mount from $79</b> — the wood versions, if you want warmth here instead of another black puck</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>Needs a separate 40W adapter. Overlaps with the ChargeView — the ChargeView is the better buy of the two.</span></div>
+    <a class="buyat" href="https://nomadgoods.com/products/stand-one-max-4th-gen-carbide" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Nomad</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="3" data-status="buy" data-price="189" data-id="13">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://www.plaud.ai/products/plaud-note-pro" target="_blank" rel="noopener noreferrer" title="Open PLAUD Note Pro at PLAUD">
+    <img src="https://cdn.shopify.com/s/files/1/0918/0171/5051/files/NotePro-_-2_fdc31980-a483-420d-b385-3723c698c9b7.png?v=1779783768" alt="AI voice recorder" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">PLAUD ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Recording</span><span class="ph">Phase 3</span></div>
+    <h3 data-f>AI voice recorder</h3>
+    <a class="pick" data-f href="https://www.plaud.ai/products/plaud-note-pro" target="_blank" rel="noopener noreferrer">PLAUD Note Pro</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$189</span>
+      <span class="seg">
+        <button data-s="buy"   class="on">Buy</button>
+        <button data-s="maybe" class="">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>Credit-card thin, 64GB, <b>50 hours of continuous recording</b>. Four mics plus a bone-conduction sensor, speaker-labelled transcripts, and you pick the model — GPT-5.5, Gemini 3.1 Pro or Claude Sonnet 4.6.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>Free tier 300 min/month · Pro $99.99/yr · Unlimited $239.99/yr</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f><b>Lectures and journal club only — not patient care.</b> No public evidence of a signed BAA, and twelve states require all-party consent. Never trust a transcribed drug name or dose without checking the audio.</span></div>
+    <a class="buyat" href="https://www.plaud.ai/products/plaud-note-pro" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>PLAUD</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="3" data-status="buy" data-price="40" data-id="16">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://www.ikea.com/us/en/p/alex-drawer-insert-gray-30595155/" target="_blank" rel="noopener noreferrer" title="Open IKEA ALEX drawer insert + adjustable dividers at IKEA">
+    <img src="https://www.ikea.com/us/en/images/products/alex-drawer-insert-gray__1395272_pe966922_s5.jpg" alt="ALEX drawer inserts" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">IKEA ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Storage</span><span class="ph">Phase 3</span></div>
+    <h3 data-f>ALEX drawer inserts</h3>
+    <a class="pick" data-f href="https://www.ikea.com/us/en/p/alex-drawer-insert-gray-30595155/" target="_blank" rel="noopener noreferrer">IKEA ALEX drawer insert + adjustable dividers</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$40</span>
+      <span class="seg">
+        <button data-s="buy"   class="on">Buy</button>
+        <button data-s="maybe" class="">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>Purpose-cut to the ALEX interior — 20½″ deep, 14⅛″ wide, so generic organizers rattle.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>3D-print your own once the printer arrives — free models on Printables</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>ALEX load limit is 26 lb total per unit, 9 lb per drawer.</span></div>
+    <a class="buyat" href="https://www.ikea.com/us/en/p/alex-drawer-insert-gray-30595155/" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>IKEA</span> <span class="arw">→</span></a>
+  </div>
+</article><button class="addcard" data-addto="3">+ Add item</button></div></section><section class="phase" data-phaseblock="4">
+  <div class="phead"><div class="pnum">4</div><div><h2>The research build</h2><p>Compute, security and storage for the retrospective database. Read the architecture note before buying any of it.</p></div>
+  <div class="ptot">Phase total <b data-ptot="4">$0</b></div></div>
+  
+  <div class="grid"><article class="card" data-phase="4" data-status="maybe" data-price="2499" data-id="19">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer" title="Open Apple Mac Studio — wait for the M5 at Apple">
+    <img src="https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/mac-studio-chip-unselect-202601-gallery-1?wid=1200&hei=630&fmt=jpeg&qlt=95&.v=1767380424828" alt="Desktop Mac" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Apple ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Compute</span><span class="ph">Phase 4</span></div>
+    <h3 data-f>Desktop Mac</h3>
+    <a class="pick" data-f href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Apple Mac Studio — wait for the M5</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$2,499</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>Waiting is the right call. The M5 Max / M5 Ultra refresh is expected around <b>October 2026</b>, pushed back by the DRAM shortage. Expect M5 Ultra up to ~36 CPU / 80 GPU cores from 96GB.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>Current M4 Max $2,499 · M3 Ultra $5,299 drives up to 8 displays</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f><b>Spend on unified memory, not GPU cores</b> — clinical data work is memory-bound. 64–128GB is the sweet spot. And be honest about the reason: a 5,000-patient chart review runs in seconds on the MacBook you own. Buy it for thermals and a desk anchor, not for the database.</span></div>
+    <a class="buyat" href="https://www.apple.com/mac-studio/" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Apple</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="4" data-status="maybe" data-price="2899" data-id="20">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://www.apple.com/shop/buy-mac/studio-display-xdr" target="_blank" rel="noopener noreferrer" title="Open Apple Studio Display XDR — 27″, VESA at Apple">
+    <img src="https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/studio-display-xdr-og-202603?wid=1200&hei=630&fmt=jpeg&qlt=95&.v=1770765683015" alt="Second display" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Apple ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Display</span><span class="ph">Phase 4</span></div>
+    <h3 data-f>Second display</h3>
+    <a class="pick" data-f href="https://www.apple.com/shop/buy-mac/studio-display-xdr" target="_blank" rel="noopener noreferrer">Apple Studio Display XDR — 27″, VESA</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$2,899</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>Mini-LED with 2,304 zones, 2,000-nit peak HDR, 120Hz, 218 PPI, 140W — and uniquely, <b>FDA-cleared DICOM presets with a Medical Imaging Calibrator</b>, cleared 1 April 2026. No other display here can show medical imaging to a calibrated standard.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>A second LG 32U990A $1,299 for a matched 32″ pair</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>27″ and silver, so it can't be the primary. Buy the <b>VESA config — $400 cheaper</b> than the stand version. 120Hz needs M2 Pro or newer.</span></div>
+    <a class="buyat" href="https://www.apple.com/shop/buy-mac/studio-display-xdr" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Apple</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="4" data-status="buy" data-price="116" data-id="21">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://www.yubico.com/product/yubikey-5-series/yubikey-5c-nfc/" target="_blank" rel="noopener noreferrer" title="Open YubiKey 5C NFC × 2 at Yubico">
+    <img src="https://resources.yubico.com/53ZDUYE6/at/chfm3rzmsrfff4tkgs94sj3/yubikey5cnfc-hero.webp" alt="Hardware security keys" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Yubico ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Security</span><span class="ph">Phase 4</span></div>
+    <h3 data-f>Hardware security keys</h3>
+    <a class="pick" data-f href="https://www.yubico.com/product/yubikey-5-series/yubikey-5c-nfc/" target="_blank" rel="noopener noreferrer">YubiKey 5C NFC × 2</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$116</span>
+      <span class="seg">
+        <button data-s="buy"   class="on">Buy</button>
+        <button data-s="maybe" class="">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>The highest-value item for the research project. Your institutional SSO is the key to the EHR and REDCap. FIDO2/WebAuthn is the only mainstream second factor that is <b>phishing-proof by construction</b> — the key cryptographically refuses a lookalike domain.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>YubiKey 5 FIPS 140-3 from $88 each if your institution mandates FIPS</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f><b>Buy two and enrol both.</b> One key is a single point of catastrophic lockout.</span></div>
+    <a class="buyat" href="https://www.yubico.com/product/yubikey-5-series/yubikey-5c-nfc/" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Yubico</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="4" data-status="buy" data-price="249" data-id="22">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://apricorn.com/aegis-fortress-l3" target="_blank" rel="noopener noreferrer" title="Open Apricorn Aegis Fortress L3 at Apricorn">
+    <img src="https://cdn11.bigcommerce.com/s-f03ct9juwu/products/248/images/1634/fortressL3_w_2cables__77519.1580951978.386.513.jpg?c=4" alt="Hardware-encrypted drive" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Apricorn ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Security</span><span class="ph">Phase 4</span></div>
+    <h3 data-f>Hardware-encrypted drive</h3>
+    <a class="pick" data-f href="https://apricorn.com/aegis-fortress-l3" target="_blank" rel="noopener noreferrer">Apricorn Aegis Fortress L3</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$249</span>
+      <span class="seg">
+        <button data-s="buy"   class="on">Buy</button>
+        <button data-s="maybe" class="">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>The off-site leg of 3-2-1 and the sanctioned way to move a dataset between an institutional workstation and your desk. <b>FIPS 140-2 Level 3</b>, AES-XTS on the drive, PIN on the keypad, no software or drivers.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>Aegis Secure Key 3NXC $129 — pocket USB-C keypad drive</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>Encryption does <b>not</b> make personal storage of patient data permitted. Its value is that a lost drive becomes a non-event rather than a reportable federal breach.</span></div>
+    <a class="buyat" href="https://apricorn.com/aegis-fortress-l3" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Apricorn</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="4" data-status="maybe" data-price="160" data-id="23">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://www.3m.com/3M/en_US/p/d/v000528159/" target="_blank" rel="noopener noreferrer" title="Open 3M Privacy Filter — 32″, 16:9 at 3M">
+    <img src="https://multimedia.3m.com/mws/media/2299820J/raised-bezel-black-privacy-filter-with-adhesive-strips.jpg" alt="Monitor privacy filter" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">3M ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Security</span><span class="ph">Phase 4</span></div>
+    <h3 data-f>Monitor privacy filter</h3>
+    <a class="pick" data-f href="https://www.3m.com/3M/en_US/p/d/v000528159/" target="_blank" rel="noopener noreferrer">3M Privacy Filter — 32″, 16:9</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$160</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>The one risk here that hardware genuinely <b>eliminates</b>. Blacks out the display outside a 60° cone, so anyone walking past sees black.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>Kensington MagPro Elite magnetic filter for the MacBook ~$85 — magnetic means it comes off in a second</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>Measure the panel diagonal and confirm 16:9 before ordering.</span></div>
+    <a class="buyat" href="https://www.3m.com/3M/en_US/p/d/v000528159/" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>3M</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="4" data-status="maybe" data-price="600" data-id="24">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://www.synology.com/en-us/products/DS425+" target="_blank" rel="noopener noreferrer" title="Open Synology DiskStation DS425+ (4-bay, diskless) at Synology">
+    <img src="https://www.synology.com/img/products/detail/DS425plus/heading.png" alt="NAS / Time Machine" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Synology ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Infrastructure</span><span class="ph">Phase 4</span></div>
+    <h3 data-f>NAS / Time Machine</h3>
+    <a class="pick" data-f href="https://www.synology.com/en-us/products/DS425+" target="_blank" rel="noopener noreferrer">Synology DiskStation DS425+ (4-bay, diskless)</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$600</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>DSM is the best NAS software for a Mac — Time Machine over SMB is a checkbox. Synology reversed the third-party drive lockout in DSM 7.3.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>UGREEN NASync DXP4800 Plus — better hardware per dollar, less mature OS</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f><b>Never put patient data on this.</b> No BAA, no institutional certification for a NAS you administer yourself. Perfect for Time Machine and de-identified data.</span></div>
+    <a class="buyat" href="https://www.synology.com/en-us/products/DS425+" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Synology</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="4" data-status="maybe" data-price="275" data-id="25">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://www.cyberpowersystems.com/product/ups/pfc-sinewave/cp1500pfclcd/" target="_blank" rel="noopener noreferrer" title="Open CyberPower CP1500PFCLCD — pure sine wave at CyberPower">
+    <img src="https://www.cyberpowersystems.com/wp-content/uploads/2026/07/cp1500pfclcd-front-vertical-photo-1.jpg" alt="UPS" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">CyberPower ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Infrastructure</span><span class="ph">Phase 4</span></div>
+    <h3 data-f>UPS</h3>
+    <a class="pick" data-f href="https://www.cyberpowersystems.com/product/ups/pfc-sinewave/cp1500pfclcd/" target="_blank" rel="noopener noreferrer">CyberPower CP1500PFCLCD — pure sine wave</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$275</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>Protects the display, dock and NAS mid-write. Pure sine wave, not simulated.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>600–900VA sine-wave unit if you skip the NAS</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>Set the NAS to auto-shutdown on the UPS USB signal.</span></div>
+    <a class="buyat" href="https://www.cyberpowersystems.com/product/ups/pfc-sinewave/cp1500pfclcd/" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>CyberPower</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="4" data-status="maybe" data-price="199" data-id="26">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://store.ui.com/us/en/products/ux7" target="_blank" rel="noopener noreferrer" title="Open Ubiquiti UniFi Express 7 (10G Wi-Fi 7) at Ubiquiti">
+    <img src="https://cdn.ecomm.ui.com/products/d3220754-f4a9-4ecc-a0bd-64e1520ef471/5985679e-1cac-4885-ad85-82e2d5c94f89.png" alt="Network" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Ubiquiti ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Infrastructure</span><span class="ph">Phase 4</span></div>
+    <h3 data-f>Network</h3>
+    <a class="pick" data-f href="https://store.ui.com/us/en/products/ux7" target="_blank" rel="noopener noreferrer">Ubiquiti UniFi Express 7 (10G Wi-Fi 7)</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$199</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>Real network visibility and VLANs — which is how you put the 3D printer on an isolated segment with no internet route.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>Eero Pro 7 $300–700 if you want it to disappear</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>Run one Cat6a to the desk and let the dock's 10GbE do the work.</span></div>
+    <a class="buyat" href="https://store.ui.com/us/en/products/ux7" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Ubiquiti</span> <span class="arw">→</span></a>
+  </div>
+</article><button class="addcard" data-addto="4">+ Add item</button></div></section><section class="phase" data-phaseblock="5">
+  <div class="phead"><div class="pnum">5</div><div><h2>Fabrication and creative</h2><p>The 3D printers, and the capture gear for photo and video work later.</p></div>
+  <div class="ptot">Phase total <b data-ptot="5">$0</b></div></div>
+  
+  <div class="grid"><article class="card" data-phase="5" data-status="maybe" data-price="3799" data-id="27">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://bambulab.com/en-us/h2d-pro" target="_blank" rel="noopener noreferrer" title="Open Bambu Lab H2D Pro at Bambu Lab">
+    <img src="https://storage.ghost.io/c/8d/d9/8dd9f85b-21c3-4782-bba8-8778cd8f2f93/content/images/size/w1200/2025/08/H2D-Pro-Banner.png" alt="3D printer — the flagship" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Bambu Lab ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Fabrication</span><span class="ph">Phase 5</span></div>
+    <h3 data-f>3D printer — the flagship</h3>
+    <a class="pick" data-f href="https://bambulab.com/en-us/h2d-pro" target="_blank" rel="noopener noreferrer">Bambu Lab H2D Pro</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$3,799</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>Bambu's actual 2026 flagship: <b>dual 350°C tungsten-carbide nozzles</b>, 65°C circulated chamber, 350×320×325 build, with <b>AMS 2 Pro and AMS HT both included</b>. The dual AMS lets you print bone white, tumour red and vessel blue in one model.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f><b>Prusa CORE One L+ $1,851</b> — half the price and a far cleaner privacy story: removable Wi-Fi module, no cloud dependency, Critical Infrastructure Edition ships with no radio · The X1 Carbon is end-of-life</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>The Pro is the only consumer printer with <b>physical network kill switches and a removable network module</b>. Run it LAN-only or on a VLAN with no internet route, and de-identify at the DICOM stage — a skull mesh is biometric data, re-identifiable by facial reconstruction.</span></div>
+    <a class="buyat" href="https://bambulab.com/en-us/h2d-pro" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Bambu Lab</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="5" data-status="maybe" data-price="5749" data-id="28">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://formlabs.com/store/3d-printers/form-4/" target="_blank" rel="noopener noreferrer" title="Open Formlabs Form 4 — Complete Package at Formlabs">
+    <img src="https://formlabs-media.formlabs.com/filer_public/be/99/be9971ce-3edb-49b6-9b79-fc0f5f2f7507/formlabs_f4_front_cover_closed_med_light_ik_240321_store_noshadow.png" alt="Resin printer" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Formlabs ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Fabrication</span><span class="ph">Phase 5</span></div>
+    <h3 data-f>Resin printer</h3>
+    <a class="pick" data-f href="https://formlabs.com/store/3d-printers/form-4/" target="_blank" rel="noopener noreferrer">Formlabs Form 4 — Complete Package</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$5,749</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>For when FDM can't resolve the anatomy. 50 µm pixel, most prints under two hours, and Formlabs is the <b>most-used brand in hospital 3D-printing labs</b>. Resin is what you need for coronary and intracranial vasculature, middle ear, and optically clear models showing a tumour inside a translucent organ.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f><b>Form 4B $12,006</b> — identical optics; the delta buys 15 certified autoclavable BioMed resins, only worth it if a model enters a sterile field</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>Uncured resin is a <b>cumulative, permanent skin sensitiser</b>. Needs real ventilation, so not near where you sleep. IPA waste can't go down a drain.</span></div>
+    <a class="buyat" href="https://formlabs.com/store/3d-printers/form-4/" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Formlabs</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="5" data-status="maybe" data-price="299" data-id="30">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://www.shure.com/en-US/products/microphones/mv7" target="_blank" rel="noopener noreferrer" title="Open Shure MV7+ — black at Shure">
+    <img src="https://www.bhphotovideo.com/images/images500x500/shure_mv7_k_podcast_microphone_1712619995_1808586.jpg" alt="Microphone" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Shure ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Audio/Video</span><span class="ph">Phase 5</span></div>
+    <h3 data-f>Microphone</h3>
+    <a class="pick" data-f href="https://www.shure.com/en-US/products/microphones/mv7" target="_blank" rel="noopener noreferrer">Shure MV7+ — black</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$299</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>USB-C <b>and</b> XLR, onboard DSP with a real-time denoiser. A dynamic mic, so it rejects the room — you can skip acoustic treatment for voice.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>Elgato Wave DX $100 — XLR only</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>USB condensers pick up the whole room. Wrong for an untreated space.</span></div>
+    <a class="buyat" href="https://www.shure.com/en-US/products/microphones/mv7" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Shure</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="5" data-status="maybe" data-price="80" data-id="31">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://www.elgato.com/us/en/p/wave-mic-arm-lp" target="_blank" rel="noopener noreferrer" title="Open Elgato Wave Mic Arm LP at Elgato">
+    <img src="https://elgato-assets.imgix.net/image/upload/f_auto/q_auto/v1770654579/Products/10AAN9901/above-the-fold/ATF/Wave_Mic_Arm_LP_ATF_01.jpg" alt="Mic boom arm" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Elgato ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Audio/Video</span><span class="ph">Phase 5</span></div>
+    <h3 data-f>Mic boom arm</h3>
+    <a class="pick" data-f href="https://www.elgato.com/us/en/p/wave-mic-arm-lp" target="_blank" rel="noopener noreferrer">Elgato Wave Mic Arm LP</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$80</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>The low-profile version — it sits <b>below</b> the monitor line instead of swinging across your screen.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>Rode PSA1+ — high profile, crosses the screen</span></div>
+    
+    <a class="buyat" href="https://www.elgato.com/us/en/p/wave-mic-arm-lp" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Elgato</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="5" data-status="maybe" data-price="180" data-id="32">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://www.logitech.com/en-us/products/webcams/mx-brio-705-for-business.html" target="_blank" rel="noopener noreferrer" title="Open Logitech MX Brio 705 — graphite at Logitech">
+    <img src="https://resource.logitech.com/w_692,c_lpad,ar_4:3,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/webcams/mx-brio-705/gallery/mx-brio-705-for-business-1.png?v=1" alt="Webcam" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Logitech ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Audio/Video</span><span class="ph">Phase 5</span></div>
+    <h3 data-f>Webcam</h3>
+    <a class="pick" data-f href="https://www.logitech.com/en-us/products/webcams/mx-brio-705-for-business.html" target="_blank" rel="noopener noreferrer">Logitech MX Brio 705 — graphite</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$180</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="on">Maybe</button>
+        <button data-s="skip"  class="">Skip</button>
+      </span></div>
+    <p class="why" data-f>4K, best-in-class app, and it matches your MX Master 4 / MX Keys S in black.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>Insta360 Link 2C $150 · Elgato Facecam MK.2 $140</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>Continuity Camera is free and the iPhone sensor beats every webcam under ~$500. Buy this as the always-on fallback.</span></div>
+    <a class="buyat" href="https://www.logitech.com/en-us/products/webcams/mx-brio-705-for-business.html" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Logitech</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="5" data-status="skip" data-price="150" data-id="33">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://shop.progradedigital.com/products/dual-slot-cfexpress-type-b-sdxc-reader" target="_blank" rel="noopener noreferrer" title="Open ProGrade PG05.7 — CFexpress Type B + SD, USB4 at ProGrade Digital">
+    <img src="https://shop.progradedigital.com/cdn/shop/files/PG05.7_898x898px_2000x2000.png?v=1777334165" alt="CFexpress card reader" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">ProGrade Digital ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Photo/Video</span><span class="ph">Phase 5</span></div>
+    <h3 data-f>CFexpress card reader</h3>
+    <a class="pick" data-f href="https://shop.progradedigital.com/products/dual-slot-cfexpress-type-b-sdxc-reader" target="_blank" rel="noopener noreferrer">ProGrade PG05.7 — CFexpress Type B + SD, USB4</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$150</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="">Maybe</button>
+        <button data-s="skip"  class="on">Skip</button>
+      </span></div>
+    <p class="why" data-f>Only once you own a CFexpress camera. The dock's UHS-II slot is already full-speed for SD.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>ProGrade PG09.7 for CFexpress Type A (Sony)</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>Buy the USB4 version, not the “20Gbps USB” version.</span></div>
+    <a class="buyat" href="https://shop.progradedigital.com/products/dual-slot-cfexpress-type-b-sdxc-reader" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>ProGrade Digital</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="5" data-status="skip" data-price="178" data-id="34">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://www.gikacoustics.com/product/gik-acoustics-242-acoustic-panel/" target="_blank" rel="noopener noreferrer" title="Open 2 × GIK FlexRange in black at GIK Acoustics">
+    <img src="https://www.gikacoustics.com/cdn/shop/files/CLASSIC_PANEL_2a062a3c-8d99-40c2-a967-9cf852749722.jpg?v=1759186974" alt="Acoustic panels" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">GIK Acoustics ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Acoustics</span><span class="ph">Phase 5</span></div>
+    <h3 data-f>Acoustic panels</h3>
+    <a class="pick" data-f href="https://www.gikacoustics.com/product/gik-acoustics-242-acoustic-panel/" target="_blank" rel="noopener noreferrer">2 × GIK FlexRange in black</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$178</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="">Maybe</button>
+        <button data-s="skip"  class="on">Skip</button>
+      </span></div>
+    <p class="why" data-f>NRC 1.05 versus ~0.4 for foam. Mount at the first reflection points, left and right at ear height.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>GIK FreeStand — no wall damage · wood slat panels if you want the acoustic treatment to carry the wood theme</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f>If you buy the MV7+ dynamic mic, treatment becomes optional for voice.</span></div>
+    <a class="buyat" href="https://www.gikacoustics.com/product/gik-acoustics-242-acoustic-panel/" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>GIK Acoustics</span> <span class="arw">→</span></a>
+  </div>
+</article><article class="card" data-phase="5" data-status="skip" data-price="69" data-id="35">
+  <div class="cardtools"><button class="cfg" data-act="cfg" title="Set image and buy-link URLs">⚙</button><button data-act="del" title="Delete this card">Del</button></div>
+  <a class="shot" href="https://immurok.com/" target="_blank" rel="noopener noreferrer" title="Open Immurok Wireless Fingerprint Auth Key at Immurok">
+    <img src="https://cdn.hackaday.io/images/9629401782805659625.jpg" alt="Fingerprint auth key" loading="lazy" referrerpolicy="no-referrer">
+    <span class="zoom">Immurok ↗</span>
+  </a>
+  <div class="body">
+    <div class="topline"><span class="cat" data-f>Security</span><span class="ph">Phase 5</span></div>
+    <h3 data-f>Fingerprint auth key</h3>
+    <a class="pick" data-f href="https://immurok.com/" target="_blank" rel="noopener noreferrer">Immurok Wireless Fingerprint Auth Key</a>
+    <div class="pricerow"><span class="price" data-f data-price-field>$69</span>
+      <span class="seg">
+        <button data-s="buy"   class="">Buy</button>
+        <button data-s="maybe" class="">Maybe</button>
+        <button data-s="skip"  class="on">Skip</button>
+      </span></div>
+    <p class="why" data-f>A Bluetooth LE biometric puck for screen unlock, <span class='mono'>sudo</span>, SSH and Git signing.</p>
+    <div class="alts"><span class="al">Alternates</span><span data-f>Apple Magic Keyboard with Touch ID · YubiKey 5C NFC, already on this list</span></div>
+    <div class="watch"><span class="wl">Watch out</span><span data-f><b>It doesn't exist yet.</b> Pre-launch Kickstarter, solo developer, 50-unit pilot batch, no reviews of shipping hardware.</span></div>
+    <a class="buyat" href="https://immurok.com/" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Immurok</span> <span class="arw">→</span></a>
+  </div>
+</article><button class="addcard" data-addto="5">+ Add item</button></div></section>
+</div>
+
+<h2 class="sec">The 32-inch display, settled</h2>
+<p class="sub">You asked whether ASUS is really the best. It isn't — and the honest reason is arithmetic, not brand preference.</p>
+<div class="callout">macOS renders its interface at 2× and expects roughly <b>110 logical points per inch</b>. A 32″ 6K panel lands at 112 pt/in — a dead-on match, and the reason 6K at this size is the correct target. A 32″ <b>8K</b> panel lands at 140 pt/in, meaning UI and text about 25% smaller than Retina standard, so you'd run a fractional scaled mode and throw away most of the resolution you paid $8,799 for. The PA32KCX is a video-mastering reference monitor, not a desktop. Meanwhile a 40″ ultrawide and every 32″ BenQ sit at <b>140 PPI</b> — the same density as the M80B you're replacing.</div>
+<table class="tbl"><thead><tr><th>Display</th><th>PPI</th><th>Text / code</th><th>Video</th><th>Photo</th><th>Finish</th><th>Verdict</th></tr></thead>
+<tbody><tr class="good"><td class="nm">LG UltraFine evo 32U990A<br><span class='mut'>32″ 6K · $1,299–1,999 · LG</span></td><td class="ctr">224</td><td>Excellent</td><td>Very good</td><td><b>Best measured accuracy here</b> — ΔE 0.73, 100% AdobeRGB</td><td class="ctr">Silver</td><td class="vd"><b>The pick.</b> Only 6K display with Thunderbolt 5. Best colour, real KVM, brand-direct.</td></tr><tr><td class="nm">Apple Studio Display XDR<br><span class='mut'>27″ 5K mini-LED · $2,899 VESA · Apple</span></td><td class="ctr">218</td><td>Excellent, 120Hz ProMotion</td><td>Best HDR here — 2,000 nits</td><td>Excellent, and <b>FDA-cleared DICOM presets</b></td><td class="ctr">Silver</td><td class="vd">Best display Apple makes — but 27″, and no KVM, Ethernet, USB-A or SD.</td></tr><tr><td class="nm">Kuycon G32P<br><span class='mut'>32″ 6K · $1,699 · Kuycon</span></td><td class="ctr">223</td><td>Excellent</td><td>Very good</td><td>Very good — same LG panel</td><td class="ctr"><b>Black</b></td><td class="vd">The blacked-out option. No KVM, and a 12-month warranty from a boutique brand.</td></tr><tr class="bad"><td class="nm">ASUS ProArt PA32KCX<br><span class='mut'>32″ 8K · $8,799 · ASUS</span></td><td class="ctr">275</td><td><b>Needs fractional scaling</b> — 8K at 32″ is 140 pt/in, ~25% smaller UI than Retina standard</td><td>Reference — 4,032 zones</td><td>Reference — ΔE&lt;1, self-calibrating</td><td class="ctr">Black</td><td class="vd"><b>Dropped.</b> You'd pay $8,799 then throw away most of the resolution to make text readable.</td></tr><tr class="bad"><td class="nm">BenQ (any 32″)<br><span class='mut'>$700–1,200 · BenQ</span></td><td class="ctr">140</td><td><b>Poor</b> — same density as your current M80B</td><td>Fine</td><td>Good colour</td><td class="ctr">Black</td><td class="vd">BenQ's highest PPI anywhere is 218 on a <b>27″</b>. Every 32″ BenQ is 4K.</td></tr><tr class="bad"><td class="nm">EIZO ColorEdge<br><span class='mut'>$4,000+ · dealer only</span></td><td class="ctr">140–163</td><td><b>Poor</b> — below your current monitor</td><td>Reference</td><td>Reference</td><td class="ctr">Black</td><td class="vd">EIZO makes no 5K or 6K panel at any size, and is dealer-only in the US.</td></tr></tbody></table>
+
+<h2 class="sec">Herman Miller, ranked</h2>
+<p class="sub">Bought new and direct. You don't have a specific pain point to target, which genuinely changes which chair is right.</p>
+<table class="tbl"><thead><tr><th>Chair</th><th>Price</th><th>Back mechanism</th><th>Best for</th><th>Warranty</th><th>Verdict</th></tr></thead>
+<tbody><tr class="good"><td class="nm">Herman Miller Embody</td><td class="ctr">$1,691 (list $2,255)</td><td><b>No lumbar pad by design</b> — central spine + Pixelated Support matrix, zero foam</td><td>Long upright sessions, no specific pain point</td><td class="ctr">12 yr</td><td class="vd"><b>The pick.</b> Distributed whole-back support, and the foamless seat is why it holds up in hour six.</td></tr><tr><td class="nm">Herman Miller Aeron</td><td class="ctr">$1,613 (list $2,150)</td><td>Adjustable PostureFit SL — independent sacral + lumbar pads</td><td>Reclining, running hot</td><td class="ctr">12 yr</td><td class="vd">Runner-up. <b>Onyx Ultra Matte</b> is the most convincingly blacked-out chair HM makes.</td></tr><tr><td class="nm">LiberNovo Omni Pro</td><td class="ctr">$1,109</td><td><b>Motorised</b> lumbar actuator + auto-stretch cycle</td><td>Novelty and active stretching</td><td class="ctr"><b>6 yr frame / 2 yr electronics</b></td><td class="vd">Fascinating, and the head-to-head below is worth reading before you decide.</td></tr><tr><td class="nm">Herman Miller Mirra 2</td><td class="ctr">$1,208–1,845</td><td>Height-adjustable lumbar, independent depth per side</td><td>Value pick with real adjustment</td><td class="ctr">12 yr</td><td class="vd">Genuinely near-Aeron for less.</td></tr><tr class="bad"><td class="nm">Herman Miller Cosm</td><td class="ctr">$1,151–1,466</td><td><b>None</b> — no back adjustment at all</td><td>Looking good for under six hours</td><td class="ctr">12 yr</td><td class="vd"><b>Skip.</b> Reviewers are unanimous that it fails on a full working day.</td></tr></tbody></table>
+<div class="callout">The reason the <b>Embody</b> beats the Aeron for you specifically: the Aeron's whole design is a pad you push into your lower back, which is the right answer when something hurts there. Nothing does. The Embody instead distributes support across the entire back with no discrete pressure point and no foam anywhere, which is the better architecture for “I just want to sit well for eight hours.” Take the Aeron in <b>Onyx Ultra Matte</b> instead if you run hot — it's mesh top to bottom — or if you recline deeply, where it holds lumbar contact better.</div>
+
+<h2 class="sec">Head to head — Embody vs Omni Pro</h2>
+<p class="sub">You asked to see these side by side. Green marks the one I'd give the point to; grey means it's a genuine tie or down to preference.</p>
+<table class="tbl h2h"><thead><tr><th></th><th>Herman Miller Embody</th><th>LiberNovo Omni Pro</th></tr></thead>
+<tbody><tr><td class="nm">Price</td><td class="">$1,691 <span class='mut'>(list $2,255, 25% off now)</span></td><td class="win"><b>$1,109</b> — $582 less</td></tr><tr><td class="nm">Back architecture</td><td class="">Central spine with flexible ribs + <b>Pixelated Support</b> matrix — hundreds of independent points on a spring layer</td><td class="win"><b>8-panel articulated backrest on 16 pivot points</b> that track your spine as you move</td></tr><tr><td class="nm">Lumbar</td><td class=""><b>No pad by design.</b> BackFit sets the spine angle to your curvature; support is distributed, not pointed</td><td class=""><b>Motorised actuator</b> — powered depth adjustment. But <b>no vertical adjustment</b>, so you can't set the height it pushes at</td></tr><tr><td class="nm">Seat</td><td class="win"><b>Zero foam</b> — pixelated matrix over a spring layer. This is why it doesn't compress by hour six</td><td class="">Foam with <b>active ventilation</b> on the Pro</td></tr><tr><td class="nm">The party trick</td><td class="">None. It's a chair that gets out of the way</td><td class="win"><b>OmniStretch</b> — a 5-minute automated cycle that stretches your back while you sit</td></tr><tr><td class="nm">Warranty</td><td class="win"><b>12 years, all-inclusive</b>, parts and labour, no hour or weight restrictions</td><td class="">6 years frame / <b>2 years electronics</b> — battery, actuator, wiring</td></tr><tr><td class="nm">Failure mode</td><td class="win">Mechanical. Fixable, and covered for 12 years</td><td class="">Electronic. A dead actuator in year three is your problem, and the chair still has a motor in the backrest</td></tr><tr><td class="nm">Power</td><td class="win">None</td><td class="">USB-C rechargeable, ~30 days per charge</td></tr><tr><td class="nm">Track record</td><td class="win">In production since 2008. Decades of independent ergonomic testing</td><td class="">Kickstarter-origin, shipping since 2024–25. No service network</td></tr><tr><td class="nm">Reviews</td><td class="win">Consistently top-tier across BTOD, Seated Lab, Wirecutter</td><td class=""><b>Split</b> — PC Gamer 86/100, Notebookcheck 4/10 on the base model</td></tr><tr><td class="nm">Returns</td><td class="">30 days direct — but 10% restocking or $99 return shipping, and a custom colourway is final sale</td><td class="">—</td></tr><tr><td class="nm">Blacked out?</td><td class="">Graphite frame + graphite base + Sync Black. Fully black</td><td class="">Graphite. Fully black</td></tr><tr><td class="nm">Best for</td><td class="">Sitting well for eight hours without thinking about the chair</td><td class="">Someone who wants the chair to actively prompt movement</td></tr></tbody></table>
+<div class="callout">The Omni Pro is doing something real — a powered lumbar and an automated stretch cycle genuinely have no equivalent at Herman Miller, and if what you want is a chair that <i>makes</i> you move, nothing else does that. The honest problem is that <b>the innovative parts carry the shortest warranty.</b> A motor, a battery and a wiring loom inside a backrest are the components most likely to fail, and they're covered for two years against Herman Miller's twelve on everything. You'd be buying a chair whose best feature is also its biggest liability, from a company with no service network, at a moment when it has no long-term reliability record. That's a reasonable bet at $200. At $1,109, against an Embody that will still be under warranty in 2038, it's harder to justify — which is why I'd still take the Embody, while agreeing the Omni Pro is the more interesting object.</div>
+
+<h2 class="sec">Your desk, and what it constrains</h2>
+<p class="sub">Both tops you might have are dimensionally identical, so most of this is already settled.</p>
+<table class="tbl"><thead><tr><th>Spec</th><th>KARLBY</th><th>SÄLJAN</th><th>What it means for this build</th></tr></thead><tbody>
+<tr><td class="nm">Surface</td><td><b>Real wood veneer</b> — 1/8″ walnut or oak over particleboard, factory hard-wax oiled</td><td>Oak-<b>effect</b> laminate — paper and resin over particleboard</td><td>KARLBY can be sanded and re-oiled and will age; SÄLJAN can't. If you have the walnut KARLBY you already own the best surface in this whole build.</td></tr>
+<tr><td class="nm">Thickness</td><td colspan="2" class="ctr"><b>1 1/2″ (38 mm)</b> — both</td><td class="win">Fits every arm here. Grovemade takes 0.4″–3.2″, Ergotron LX Pro 0.4″–2.4″. Settled.</td></tr>
+<tr><td class="nm">Depth</td><td colspan="2" class="ctr"><b>25 5/8″</b> — both</td><td>Deep enough for a 32″ on an arm, and the ALEX at 22⅞″ tucks under with ~2¾″ to spare. <b>This is why the arm matters</b> — a monitor on its own stand would eat 8″ of that.</td></tr>
+<tr><td class="nm">Width</td><td colspan="2" class="ctr"><b>74″</b> or <b>98″</b></td><td>74″ comfortably holds the 32″ plus the espresso beside it. 98″ would take a second 32″.</td></tr>
+<tr><td class="nm">Core</td><td colspan="2" class="ctr"><b>Particleboard</b> — both</td><td class="warnrow">The one real caution. Use the arm's backing plate so a 13 lb cantilever doesn't dent the veneer, and if you ever drill a grommet, <b>seal the cut edge with oil</b> or the chipboard swells.</td></tr>
+<tr><td class="nm">Price</td><td>$199 oak / $249 walnut (74″)</td><td>$129 (74″)</td><td>If you have SÄLJAN and want the real thing, a walnut KARLBY is a $249 upgrade to the most visible surface in the room.</td></tr>
+</tbody></table>
+<div class="callout"><b>The one thing left to check:</b> Ergotron's own clamp guide specifies <b>1.2″ of clear space behind the desk edge</b> for a C-clamp to slide on. If your desk sits flush against a wall, you'll need to pull it forward about an inch and a half, or clamp from the side. Worth measuring before you order the arm.</div>
+
+<h2 class="sec">Still worth measuring</h2>
+<p class="sub">The desk is settled — these are the remaining unknowns. Send them whenever and I'll lock the layout.</p>
+<div class="mlist"><div class="mitem"><h4>1. Desk top thickness<span class="slot"></span></h4><p>The Ergotron LX Pro clamp takes 0.4″–2.4″. Grovemade goes to 3.2″; Humanscale stops at 2.0″.</p><div class="fix">If it&#39;s a problem — Drill a grommet and bolt through — more rigid anyway on a desk that moves.</div></div><div class="mitem"><h4>2. Clear depth behind the rear edge<span class="slot"></span></h4><p>Standing-desk crossbars and controller boxes sit exactly where a clamp jaw needs to go. Most clamps need 2.5″–3″ unobstructed.</p><div class="fix">If it&#39;s a problem — Grommet mount, or shift the arm to a clear span.</div></div><div class="mitem"><h4>3. Your correct <b>seated</b> desk height<span class="slot"></span></h4><p>Elbows ~90°, feet flat, thighs parallel to the floor. If this is below ~28.5″, the ALEX drawers are physically in the way.</p><div class="fix">If it&#39;s a problem — Move the ALEX out from under the desk.</div></div><div class="mitem"><h4>4. Desk width, edge to edge<span class="slot"></span></h4><p>One 32″ panel is ~28″ wide. Adding the 27″ Apple alongside it needs roughly 52″ of clear span.</p><div class="fix">If it&#39;s a problem — Single display, or run the second one portrait.</div></div><div class="mitem"><h4>5. Desk depth, front to back<span class="slot"></span></h4><p>A 32″ monitor wants ~30″ of viewing distance. The arm reclaims 6–8″ versus a monitor's own stand.</p><div class="fix">If it&#39;s a problem — The arm usually solves this by itself.</div></div><div class="mitem"><h4>6. Your MacBook Pro's exact chip<span class="slot"></span></h4><p>Sets your display ceiling. M4/M5 Pro drive 2 externals, M5 Pro 3, Max chips 4. <span class='mono'>Apple menu › About This Mac</span>.</p><div class="fix">If it&#39;s a problem — Everything on this list works on 2 displays.</div></div></div>
+<div class="callout">Your ALEX drawers are 27½″ tall, so with a top they block the desk below roughly <b>28½″</b>. The ALEX is 22⅞″ deep, so a 30″-deep top sits it back cleanly, and its load limit is 26 lb per unit — the NAS and UPS go on the floor.</div>
+
+<footer>
+<b style="color:var(--ink)">Sources</b> — Displays: LG · Apple Newsroom (Mar 2026) · PCWorld · MacRumors · Tom's Hardware · TFTCentral · BenQ · EIZO · Dell · Samsung · Kuycon. Chairs: Herman Miller store and price books PB_EMB / PB_AEN (eff. Apr 2026) · BTOD · Seated Lab. Research: 45 CFR 46.104(d)(4) · 45 CFR 164.508 / 164.512(i) / 164.514 · REDCap / Vanderbilt · institutional policies at Northwestern, Univ. of Minnesota, UC Davis Health and Johns Hopkins · HHS OCR penalty tiers (Jan 2026) · Yubico · Apricorn · 3M. 3D printing: Bambu Lab blog (X2D, X1 EOL) · Prusa · Make: · Tom's Hardware · Consumer Rights Wiki (Bambu authorisation firmware) · <i>La radiologia medica</i> 2026 (3D-printed surgical planning). Objects: Flos · Dyson · Vestaboard · Teenage Engineering.
+<br><br>Product images are hot-linked from each manufacturer and remain their property. All links tested 16 August 2026; several items were showing out of stock or pre-order, and prices should be re-checked at purchase.
+</footer>
+</div>
+
+<script>
+const SCHEMA='desk-sheet-v4';
+const content=document.getElementById('content');
+const money=n=>'$'+(n||0).toLocaleString('en-US');
+
+/* ---------- totals ---------- */
+function recalc(){
+  let b=0,m=0,a=0; const per={};
+  document.querySelectorAll('.card').forEach(c=>{
+    const p=+c.dataset.price||0,s=c.dataset.status,ph=c.dataset.phase;
+    per[ph]=per[ph]||0; a+=p;
+    if(s==='buy'){b+=p;m+=p;per[ph]+=p} else if(s==='maybe'){m+=p;per[ph]+=p}
+  });
+  tBuy.textContent=money(b); tMaybe.textContent=money(m); tAll.textContent=money(a);
+  document.querySelectorAll('[data-ptot]').forEach(e=>e.textContent=money(per[e.dataset.ptot]||0));
+  const n=document.querySelectorAll('.card').length;
+  const all=document.querySelector('.filters button[data-f="all"]'); if(all) all.textContent='All '+n;
+}
+
+/* ---------- storage (degrades quietly if unavailable) ---------- */
+const BUILD=content.dataset.build;
+let saveTimer=null;
+function store(k,v){ try{ localStorage.setItem(k,v); return true; }catch(e){ return false; } }
+function fetchStore(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function save(){
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(()=>{
+    const ok=store(SCHEMA, JSON.stringify({v:2,build:BUILD,at:new Date().toISOString(),html:content.innerHTML}));
+    const t=document.getElementById('savedTag');
+    if(t) t.textContent = ok ? 'Saved to this browser.' : 'Edits are session-only here — use Export to keep them.';
+  },400);
+}
+
+/* If I've published a newer version than the one you edited, don't silently
+   overwrite either side — ask. */
+let pending=null;
+function restore(){
+  const raw=fetchStore(SCHEMA); if(!raw) return;
+  let o; try{ o=JSON.parse(raw); }catch(e){ return; }
+  if(!o||!o.html) return;
+  if(o.build===BUILD){ content.innerHTML=o.html; return; }
+  pending=o;
+  const when=o.at?new Date(o.at).toLocaleDateString(undefined,{month:'short',day:'numeric'}):'earlier';
+  document.getElementById('verDetail').textContent =
+    'Your edits from '+when+' are still saved. Loading the update replaces them; keeping yours hides the update until you reset.';
+  document.getElementById('verBanner').style.display='flex';
+}
+document.getElementById('vKeep').addEventListener('click',()=>{
+  if(pending) content.innerHTML=pending.html;
+  document.getElementById('verBanner').style.display='none';
+  recalc(); save();
+});
+document.getElementById('vTake').addEventListener('click',()=>{
+  try{ localStorage.removeItem(SCHEMA); }catch(e){}
+  document.getElementById('verBanner').style.display='none';
+  recalc();
+});
+
+/* ---------- delegated interactions ---------- */
+content.addEventListener('click',e=>{
+  const seg=e.target.closest('.seg button');
+  if(seg){ e.preventDefault();
+    const card=seg.closest('.card'); card.dataset.status=seg.dataset.s;
+    seg.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===seg));
+    recalc(); save(); return; }
+
+  const tool=e.target.closest('.cardtools button');
+  if(tool){ e.preventDefault();
+    const card=tool.closest('.card');
+    if(tool.dataset.act==='del'){
+      if(confirm('Delete this card?')){ card.remove(); recalc(); save(); }
+    } else {
+      const img=card.querySelector('.shot img'), links=card.querySelectorAll('a');
+      const ni=prompt('Image URL:', img?img.getAttribute('src'):'');
+      if(ni!==null&&img){ img.setAttribute('src',ni); img.style.visibility=''; const na=card.querySelector('.na'); if(na)na.remove(); }
+      const nl=prompt('Buy link URL:', links[0]?links[0].getAttribute('href'):'');
+      if(nl!==null) links.forEach(a=>a.setAttribute('href',nl));
+      save();
+    }
+    return; }
+
+  const add=e.target.closest('.addcard');
+  if(add){ e.preventDefault();
+    const ph=add.dataset.addto;
+    const el=document.createElement('article');
+    el.className='card'; el.dataset.phase=ph; el.dataset.status='maybe'; el.dataset.price='0';
+    el.dataset.id='new-'+Date.now();
+    el.innerHTML='<div class="cardtools"><button class="cfg" data-act="cfg">⚙</button><button data-act="del">Del</button></div>'
+      +'<a class="shot" href="#" target="_blank" rel="noopener noreferrer"><img src="" alt=""><span class="zoom">↗</span></a>'
+      +'<div class="body"><div class="topline"><span class="cat" data-f>Category</span><span class="ph">Phase '+ph+'</span></div>'
+      +'<h3 data-f>What it is</h3><a class="pick" data-f href="#" target="_blank" rel="noopener noreferrer">Product name</a>'
+      +'<div class="pricerow"><span class="price" data-f data-price-field>$0</span>'
+      +'<span class="seg"><button data-s="buy">Buy</button><button data-s="maybe" class="on">Maybe</button><button data-s="skip">Skip</button></span></div>'
+      +'<p class="why" data-f>Why this one.</p>'
+      +'<div class="alts"><span class="al">Alternates</span><span data-f>—</span></div>'
+      +'<a class="buyat" href="#" target="_blank" rel="noopener noreferrer">Buy at <span class="brandname" data-f>Brand</span> <span class="arw">→</span></a></div>';
+    add.parentNode.insertBefore(el,add);
+    setEditable(true); recalc(); save();
+    el.querySelector('h3').focus(); return; }
+});
+
+/* keep prices numeric */
+content.addEventListener('blur',e=>{
+  const f=e.target.closest('[data-f]'); if(!f)return;
+  if(f.hasAttribute('data-price-field')){
+    const n=parseFloat((f.textContent||'').replace(/[^0-9.]/g,''))||0;
+    f.closest('.card').dataset.price=Math.round(n);
+    f.textContent=money(Math.round(n));
+    recalc();
+  }
+  save();
+},true);
+content.addEventListener('input',()=>save());
+
+/* image fallback — error doesn't bubble, so capture */
+document.addEventListener('error',e=>{
+  const im=e.target;
+  if(im.tagName!=='IMG'||!im.closest('.shot'))return;
+  im.style.visibility='hidden';
+  if(im.parentNode.querySelector('.na'))return;
+  const d=document.createElement('div'); d.className='na'; d.textContent='image unavailable';
+  im.parentNode.appendChild(d);
+},true);
+
+/* ---------- filters ---------- */
+document.querySelectorAll('.filters button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));
+    const f=b.dataset.f;
+    document.querySelectorAll('[data-phaseblock]').forEach(sec=>{
+      sec.style.display=(f==='all'||sec.dataset.phaseblock===f)?'':'none';
+    });
+  });
+});
+
+/* ---------- edit mode ---------- */
+function setEditable(on){
+  document.body.classList.toggle('editing',on);
+  document.getElementById('editToggle').classList.toggle('on',on);
+  document.getElementById('editToggle').textContent = on ? 'Done' : 'Edit';
+  content.querySelectorAll('[data-f]').forEach(el=>{
+    if(on) el.setAttribute('contenteditable','true'); else el.removeAttribute('contenteditable');
+  });
+}
+document.getElementById('editToggle').addEventListener('click',()=>{
+  setEditable(!document.body.classList.contains('editing'));
+  if(!document.body.classList.contains('editing')) save();
+});
+
+/* ---------- export ---------- */
+document.getElementById('btnExport').addEventListener('click',()=>{
+  const wasEditing=document.body.classList.contains('editing');
+  setEditable(false);
+  const clone=document.documentElement.cloneNode(true);
+  clone.querySelectorAll('[contenteditable]').forEach(e=>e.removeAttribute('contenteditable'));
+  const b=clone.querySelector('body'); if(b) b.classList.remove('editing');
+  const tag=clone.querySelector('#savedTag'); if(tag) tag.textContent='';
+  const blob=new Blob(['<!DOCTYPE html>\n'+clone.outerHTML],{type:'text/html'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download='Desk_Build_Sheet.html';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+  if(wasEditing) setEditable(true);
+});
+
+/* ---------- reset ---------- */
+document.getElementById('btnReset').addEventListener('click',()=>{
+  if(!confirm('Discard your edits and restore the original list?'))return;
+  try{ localStorage.removeItem(SCHEMA); }catch(e){}
+  location.reload();
+});
+
+restore();
+recalc();
+</script>
+</body></html>
